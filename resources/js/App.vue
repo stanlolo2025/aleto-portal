@@ -56,6 +56,9 @@
             <li class="nav-item" v-if="isAdmin">
               <router-link class="nav-link" to="/users">⚙️ Users</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/messages">✉️ Messages</router-link>
+            </li>
             <li class="nav-item" v-if="isGovOfficial">
               <router-link class="nav-link" to="/reports">📊 Reports</router-link>
             </li>

@@ -68,8 +68,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // Admin requires MFA
-        if ($user->isAdmin() && app()->environment('production')) {
+        // Admin requires MFA (only when MAIL_MAILER is not 'log')
+        if ($user->isAdmin() && config('mail.default') !== 'log') {
             $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
             MfaCode::create([

@@ -12,6 +12,7 @@ import EducationPage from './pages/EducationPage.vue';
 import ProjectsPage from './pages/ProjectsPage.vue';
 import ReportsPage from './pages/ReportsPage.vue';
 import AnnouncementsPage from './pages/AnnouncementsPage.vue';
+import MessagesPage from './pages/MessagesPage.vue';
 import AuditLogViewer from './pages/AuditLogViewer.vue';
 import UserManager from './pages/UserManager.vue';
 
@@ -31,6 +32,7 @@ const routes = [
     { path: '/projects', component: ProjectsPage, meta: { requiresAuth: true, roles: ['admin'] } },
     { path: '/reports', component: ReportsPage, meta: { requiresAuth: true, roles: ['admin', 'government_official'] } },
     { path: '/announcements', component: AnnouncementsPage, meta: { requiresAuth: true, roles: ['admin'] } },
+    { path: '/messages', component: MessagesPage, meta: { requiresAuth: true } },
     { path: '/audit', component: AuditLogViewer, meta: { requiresAuth: true, roles: ['admin', 'auditor'] } },
     { path: '/users', component: UserManager, meta: { requiresAuth: true, roles: ['admin'] } },
 ];

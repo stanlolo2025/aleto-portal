@@ -123,6 +123,13 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\SessionTimeout::class])-
         Route::get('/enquiries', [\App\Http\Controllers\Api\EnquiryController::class, 'index']);
         Route::post('/enquiries/{id}/respond', [\App\Http\Controllers\Api\EnquiryController::class, 'respond']);
 
+        // Messages
+        Route::get('/messages/inbox', [\App\Http\Controllers\Api\MessageController::class, 'inbox']);
+        Route::get('/messages/sent', [\App\Http\Controllers\Api\MessageController::class, 'sent']);
+        Route::get('/messages/unread-count', [\App\Http\Controllers\Api\MessageController::class, 'unreadCount']);
+        Route::post('/messages/send', [\App\Http\Controllers\Api\MessageController::class, 'send']);
+        Route::post('/messages/{id}/read', [\App\Http\Controllers\Api\MessageController::class, 'read']);
+
         // Reports
         Route::get('/reports', [\App\Http\Controllers\Api\ReportsController::class, 'availableReports']);
         Route::post('/reports/generate', [\App\Http\Controllers\Api\ReportsController::class, 'generate']);
