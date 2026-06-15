@@ -84,9 +84,12 @@ class GrantController extends Controller
         if ($request->filled('marital_status')) {
             $query->where('marital_status', $request->marital_status);
         }
+        if ($request->filled('occupation')) {
+            $query->where('occupation', 'like', '%' . $request->occupation . '%');
+        }
 
         $eligible = $query->orderBy('full_name')
-            ->get(['id', 'unique_id', 'full_name', 'date_of_birth', 'gender', 'household_id', 'village', 'ward', 'bank_name', 'bank_account_number', 'status']);
+            ->get(['id', 'unique_id', 'full_name', 'date_of_birth', 'gender', 'household_id', 'village', 'ward', 'bank_name', 'bank_account_number', 'occupation', 'education_level', 'marital_status', 'status']);
 
         return response()->json(['data' => $eligible]);
     }

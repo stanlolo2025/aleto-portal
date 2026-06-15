@@ -181,7 +181,10 @@
               <div class="col-md-2"><label class="form-label small mb-0">Education</label><select v-model="eligibleFilters.education_level" class="form-select form-select-sm" @change="loadEligible"><option value="">All</option><option value="none">None</option><option value="primary">Primary</option><option value="secondary">Secondary</option><option value="tertiary">Tertiary</option></select></div>
               <div class="col-md-2"><label class="form-label small mb-0">Marital Status</label><select v-model="eligibleFilters.marital_status" class="form-select form-select-sm" @change="loadEligible"><option value="">All</option><option value="single">Single</option><option value="married">Married</option><option value="widowed">Widowed</option></select></div>
             </div>
-            <div class="mb-2"><input v-model="eligibleSearch" class="form-control form-control-sm" placeholder="Search by name..."></div>
+            <div class="row g-2 mb-2">
+              <div class="col-md-3"><label class="form-label small mb-0">Occupation</label><input v-model="eligibleFilters.occupation" class="form-control form-control-sm" placeholder="e.g. farmer, trader" @change="loadEligible"></div>
+              <div class="col-md-9"><input v-model="eligibleSearch" class="form-control form-control-sm" placeholder="Search by name..."></div>
+            </div>
 
             <div v-if="!eligible.length" class="text-center text-muted py-3">No eligible villagers match filters.</div>
             <div v-else>
@@ -190,20 +193,26 @@
                   <thead class="table-light sticky-top">
                     <tr>
                       <th><input type="checkbox" @change="toggleAll($event)"></th>
-                      <th>Name</th>
+                      <th>Name / ID</th>
                       <th>Age</th>
                       <th>Gender</th>
+                      <th>Occupation</th>
+                      <th>Education</th>
                       <th>Village</th>
+                      <th>Marital</th>
                       <th>Bank</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="v in filteredEligible" :key="v.id" :class="{'table-primary': selectedIds.includes(v.id)}">
                       <td><input type="checkbox" v-model="selectedIds" :value="v.id"></td>
-                      <td>{{ v.full_name }}<br><code class="small">{{ v.unique_id }}</code></td>
+                      <td>{{ v.full_name }}<br><code class="small text-muted">{{ v.unique_id }}</code></td>
                       <td>{{ calcAge(v.date_of_birth) }}</td>
                       <td>{{ v.gender }}</td>
+                      <td>{{ v.occupation || '—' }}</td>
+                      <td class="text-capitalize">{{ v.education_level || '—' }}</td>
                       <td>{{ v.village || '—' }}</td>
+                      <td class="text-capitalize">{{ v.marital_status || '—' }}</td>
                       <td><small>{{ v.bank_name || '—' }}</small></td>
                     </tr>
                   </tbody>
@@ -337,7 +346,7 @@ export default {
       eligible: [],
       eligibleSearch: '',
       selectedIds: [],
-      eligibleFilters: { age_min: '', age_max: '', gender: '', village: '', education_level: '', marital_status: '' },
+      eligibleFilters: { age_min: '', age_max: '', gender: '', village: '', education_level: '', marital_status: '', occupation: '' },
       grantHistory: [],
       showRecordPayment: false,
       historyForm: { action_type: 'payment', villager_record_id: '', amount: '', payment_method: '', transaction_reference: '', remarks: '' },
