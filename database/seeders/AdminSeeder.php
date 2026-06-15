@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
             ['username' => 'admin'],
             [
                 'name' => 'System Administrator',
-                'email' => 'admin@aletoclan.org',
+                'email' => 'admin@aletoclan.com',
                 'password' => Hash::make('Admin@2024!'),
                 'role' => 'admin',
                 'phone' => '+2348000000000',

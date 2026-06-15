@@ -79,8 +79,14 @@ class AuthController extends Controller
                 'expires_at' => now()->addMinutes(5),
             ]);
 
-            // In production, send via email/SMS
-            // dispatch(new \App\Jobs\SendMfaCodeJob($user, $code));
+            // Send MFA code via email
+            \Illuminate\Support\Facades\Mail::raw(
+                "Your Aleto Clan Portal login code is: {$code}\n\nThis code expires in 5 minutes. Do not share it with anyone.",
+                function ($message) use ($user) {
+                    $message->to($user->email)
+                        ->subject('Aleto Clan Portal - Login Verification Code');
+                }
+            );
 
             return response()->json([
                 'message' => 'MFA code sent. Please verify.',
