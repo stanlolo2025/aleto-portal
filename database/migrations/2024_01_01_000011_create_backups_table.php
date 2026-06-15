@@ -16,9 +16,9 @@ return new class extends Migration
             $table->enum('status', ['in_progress', 'completed', 'failed', 'corrupted'])->default('in_progress');
             $table->string('integrity_hash')->nullable();
             $table->boolean('integrity_verified')->default(false);
-            $table->timestamp('started_at');
+            $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
-            $table->timestamp('expires_at');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
