@@ -25,8 +25,9 @@
           <tr>
             <th>Unique ID</th>
             <th>Full Name</th>
+            <th>Age</th>
             <th>Gender</th>
-            <th>Household</th>
+            <th>Village</th>
             <th>Status</th>
             <th>Registration Date</th>
             <th>Registered By</th>
@@ -37,8 +38,9 @@
           <tr v-for="v in villagers" :key="v.id">
             <td><code>{{ v.unique_id }}</code></td>
             <td>{{ v.full_name }}</td>
+            <td>{{ calcAge(v.date_of_birth) }}</td>
             <td>{{ v.gender }}</td>
-            <td>{{ v.household_id }}</td>
+            <td>{{ v.village || '—' }}</td>
             <td>
               <span :class="statusBadge(v.status)">{{ v.status }}</span>
             </td>
@@ -86,6 +88,15 @@ export default {
     statusBadge(status) {
       const map = { active: 'badge bg-success', deceased: 'badge bg-secondary', archived: 'badge bg-warning' };
       return map[status] || 'badge bg-secondary';
+    },
+    calcAge(dob) {
+      if (!dob) return '—';
+      const today = new Date();
+      const birth = new Date(dob);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
     },
     formatDate(d) { return d ? new Date(d).toLocaleDateString() : ''; },
   },

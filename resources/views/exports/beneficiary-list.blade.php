@@ -66,7 +66,7 @@
 
         <table class="summary-table">
             <thead>
-                <tr><th>#</th><th>Unique ID</th><th>Full Name</th><th>Bank Name</th><th>Account Number</th><th>Amount (₦)</th></tr>
+                <tr><th>#</th><th>Unique ID</th><th>Full Name</th><th>Age</th><th>Gender</th><th>Village</th><th>Bank Name</th><th>Account Number</th><th>Amount (₦)</th></tr>
             </thead>
             <tbody>
                 @foreach($items as $index => $item)
@@ -74,17 +74,21 @@
                     $villager = $item->villagerRecord;
                     $bankName = $villager->proxyAccount ? $villager->proxyAccount->proxy_bank_name : ($villager->bank_name ?? 'N/A');
                     $accountNumber = $villager->getEffectiveBankAccount() ?? 'N/A';
+                    $age = $villager->date_of_birth ? now()->diffInYears($villager->date_of_birth) : 'N/A';
                 @endphp
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $villager->unique_id }}</td>
                     <td>{{ $villager->full_name }}</td>
+                    <td>{{ $age }}</td>
+                    <td>{{ ucfirst($villager->gender) }}</td>
+                    <td>{{ $villager->village ?? 'N/A' }}</td>
                     <td>{{ $bankName }}</td>
                     <td>{{ $accountNumber }}</td>
                     <td>{{ number_format($item->grant_amount, 2) }}</td>
                 </tr>
                 @endforeach
-                <tr class="total-row"><td colspan="5" style="text-align:right;">TOTAL:</td><td>₦{{ number_format($items->sum('grant_amount'), 2) }}</td></tr>
+                <tr class="total-row"><td colspan="8" style="text-align:right;">TOTAL:</td><td>₦{{ number_format($items->sum('grant_amount'), 2) }}</td></tr>
             </tbody>
         </table>
 

@@ -53,19 +53,40 @@ class GrantController extends Controller
         return response()->json(['data' => $lists]);
     }
 
-    public function getEligible(string $grantId): JsonResponse
+    public function getEligible(Request $request, string $grantId): JsonResponse
     {
         $grant = Grant::where('grant_identifier', $grantId)->firstOrFail();
 
-        // Get IDs already approved for this grant
         $approvedVillagerIds = BeneficiaryListItem::whereHas('beneficiaryList', function ($q) use ($grant) {
             $q->where('grant_id', $grant->id)->where('status', 'approved');
         })->pluck('villager_record_id');
 
-        $eligible = VillagerRecord::active()
-            ->whereNotIn('id', $approvedVillagerIds)
-            ->orderBy('full_name')
-            ->get(['id', 'unique_id', 'full_name', 'household_id', 'status']);
+        $query = VillagerRecord::active()->whereNotIn('id', $approvedVillagerIds);
+
+        if ($request->filled('age_min')) {
+            $query->where('date_of_birth', '<=', now()->subYears((int)$request->age_min)->format('Y-m-d'));
+        }
+        if ($request->filled('age_max')) {
+            $query->where('date_of_birth', '>=', now()->subYears((int)$request->age_max)->format('Y-m-d'));
+        }
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+        if ($request->filled('village')) {
+            $query->where('village', $request->village);
+        }
+        if ($request->filled('ward')) {
+            $query->where('ward', $request->ward);
+        }
+        if ($request->filled('education_level')) {
+            $query->where('education_level', $request->education_level);
+        }
+        if ($request->filled('marital_status')) {
+            $query->where('marital_status', $request->marital_status);
+        }
+
+        $eligible = $query->orderBy('full_name')
+            ->get(['id', 'unique_id', 'full_name', 'date_of_birth', 'gender', 'household_id', 'village', 'ward', 'bank_name', 'bank_account_number', 'status']);
 
         return response()->json(['data' => $eligible]);
     }

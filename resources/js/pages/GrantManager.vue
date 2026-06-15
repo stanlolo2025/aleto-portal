@@ -165,45 +165,56 @@
         </div>
       </div>
 
-      <!-- Beneficiary Selection Panel -->
-      <div class="card mt-3 shadow border-success" v-if="showBeneficiarySelection">
-        <div class="card-header bg-success text-white d-flex justify-content-between">
-          <h6 class="mb-0">Select Beneficiaries for {{ selectedGrant.name }}</h6>
-          <button class="btn btn-sm btn-outline-light" @click="showBeneficiarySelection = false">✕ Close</button>
-        </div>
-        <div class="card-body">
-          <div v-if="!eligible.length" class="text-center text-muted py-3">
-            <p>No eligible villagers. All active villagers may already be on an approved list for this grant.</p>
+      <div v-if="showBeneficiarySelection" class="mt-3">
+        <div class="card shadow border-success">
+          <div class="card-header bg-success text-white d-flex justify-content-between">
+            <h6 class="mb-0">Select Beneficiaries for {{ selectedGrant.name }}</h6>
+            <button class="btn btn-sm btn-outline-light" @click="showBeneficiarySelection = false">✕ Close</button>
           </div>
-          <div v-else>
-            <div class="mb-3">
-              <input v-model="eligibleSearch" class="form-control" placeholder="Search by name...">
+          <div class="card-body">
+            <!-- Filters -->
+            <div class="row g-2 mb-3 p-2 bg-light rounded">
+              <div class="col-md-2"><label class="form-label small mb-0">Age Min</label><input v-model="eligibleFilters.age_min" type="number" class="form-control form-control-sm" placeholder="e.g. 18" @change="loadEligible"></div>
+              <div class="col-md-2"><label class="form-label small mb-0">Age Max</label><input v-model="eligibleFilters.age_max" type="number" class="form-control form-control-sm" placeholder="e.g. 65" @change="loadEligible"></div>
+              <div class="col-md-2"><label class="form-label small mb-0">Gender</label><select v-model="eligibleFilters.gender" class="form-select form-select-sm" @change="loadEligible"><option value="">All</option><option value="male">Male</option><option value="female">Female</option></select></div>
+              <div class="col-md-2"><label class="form-label small mb-0">Village</label><input v-model="eligibleFilters.village" class="form-control form-control-sm" placeholder="Village" @change="loadEligible"></div>
+              <div class="col-md-2"><label class="form-label small mb-0">Education</label><select v-model="eligibleFilters.education_level" class="form-select form-select-sm" @change="loadEligible"><option value="">All</option><option value="none">None</option><option value="primary">Primary</option><option value="secondary">Secondary</option><option value="tertiary">Tertiary</option></select></div>
+              <div class="col-md-2"><label class="form-label small mb-0">Marital Status</label><select v-model="eligibleFilters.marital_status" class="form-select form-select-sm" @change="loadEligible"><option value="">All</option><option value="single">Single</option><option value="married">Married</option><option value="widowed">Widowed</option></select></div>
             </div>
-            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-              <table class="table table-sm table-hover">
-                <thead class="table-light sticky-top">
-                  <tr>
-                    <th><input type="checkbox" @change="toggleAll($event)"></th>
-                    <th>Name</th>
-                    <th>Unique ID</th>
-                    <th>Household</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="v in filteredEligible" :key="v.id" :class="{'table-primary': selectedIds.includes(v.id)}">
-                    <td><input type="checkbox" v-model="selectedIds" :value="v.id"></td>
-                    <td>{{ v.full_name }}</td>
-                    <td><code>{{ v.unique_id }}</code></td>
-                    <td>{{ v.household_id }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-              <span>Selected: <strong>{{ selectedIds.length }}</strong> of {{ eligible.length }} eligible villagers</span>
-              <button class="btn btn-success" @click="createList" :disabled="!selectedIds.length || creatingList">
-                {{ creatingList ? 'Creating...' : '✓ Create Beneficiary List (' + selectedIds.length + ')' }}
-              </button>
+            <div class="mb-2"><input v-model="eligibleSearch" class="form-control form-control-sm" placeholder="Search by name..."></div>
+
+            <div v-if="!eligible.length" class="text-center text-muted py-3">No eligible villagers match filters.</div>
+            <div v-else>
+              <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-sm table-hover">
+                  <thead class="table-light sticky-top">
+                    <tr>
+                      <th><input type="checkbox" @change="toggleAll($event)"></th>
+                      <th>Name</th>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>Village</th>
+                      <th>Bank</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="v in filteredEligible" :key="v.id" :class="{'table-primary': selectedIds.includes(v.id)}">
+                      <td><input type="checkbox" v-model="selectedIds" :value="v.id"></td>
+                      <td>{{ v.full_name }}<br><code class="small">{{ v.unique_id }}</code></td>
+                      <td>{{ calcAge(v.date_of_birth) }}</td>
+                      <td>{{ v.gender }}</td>
+                      <td>{{ v.village || '—' }}</td>
+                      <td><small>{{ v.bank_name || '—' }}</small></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <span>Selected: <strong>{{ selectedIds.length }}</strong> of {{ eligible.length }}</span>
+                <button class="btn btn-success" @click="createList" :disabled="!selectedIds.length || creatingList">
+                  {{ creatingList ? 'Creating...' : '✓ Create Beneficiary List (' + selectedIds.length + ')' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -326,6 +337,7 @@ export default {
       eligible: [],
       eligibleSearch: '',
       selectedIds: [],
+      eligibleFilters: { age_min: '', age_max: '', gender: '', village: '', education_level: '', marital_status: '' },
       grantHistory: [],
       showRecordPayment: false,
       historyForm: { action_type: 'payment', villager_record_id: '', amount: '', payment_method: '', transaction_reference: '', remarks: '' },
@@ -383,12 +395,26 @@ export default {
     async selectBeneficiaries() {
       this.showBeneficiarySelection = true;
       this.selectedIds = [];
+      await this.loadEligible();
+    },
+    async loadEligible() {
       try {
-        const { data } = await axios.get(`/grants/${this.selectedGrant.grant_identifier}/eligible`);
+        const params = {};
+        Object.keys(this.eligibleFilters).forEach(k => { if (this.eligibleFilters[k]) params[k] = this.eligibleFilters[k]; });
+        const { data } = await axios.get(`/grants/${this.selectedGrant.grant_identifier}/eligible`, { params });
         this.eligible = data.data;
       } catch (e) {
         alert(e.response?.data?.message || 'Error loading eligible villagers');
       }
+    },
+    calcAge(dob) {
+      if (!dob) return '—';
+      const today = new Date();
+      const birth = new Date(dob);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
     },
     toggleAll(e) {
       this.selectedIds = e.target.checked ? this.filteredEligible.map(v => v.id) : [];

@@ -34,7 +34,35 @@ class VillagerController extends Controller
             $query->where('household_id', $request->household_id);
         }
 
-        $villagers = $query->with('registeredByUser:id,name')->orderBy('created_at', 'desc')->paginate(25);
+        if ($request->has('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->has('village')) {
+            $query->where('village', $request->village);
+        }
+
+        if ($request->has('ward')) {
+            $query->where('ward', $request->ward);
+        }
+
+        if ($request->has('age_min')) {
+            $query->where('date_of_birth', '<=', now()->subYears((int)$request->age_min)->format('Y-m-d'));
+        }
+
+        if ($request->has('age_max')) {
+            $query->where('date_of_birth', '>=', now()->subYears((int)$request->age_max)->format('Y-m-d'));
+        }
+
+        if ($request->has('education_level')) {
+            $query->where('education_level', $request->education_level);
+        }
+
+        if ($request->has('marital_status')) {
+            $query->where('marital_status', $request->marital_status);
+        }
+
+        $villagers = $query->with('registeredByUser:id,name')->orderBy('created_at', 'desc')->paginate($request->get('per_page', 25));
 
         return response()->json($villagers);
     }
