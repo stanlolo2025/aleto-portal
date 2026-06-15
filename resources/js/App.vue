@@ -1,20 +1,11 @@
 <template>
   <div id="app">
-    <nav v-if="isAuthenticated" class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <!-- Top Navbar -->
+    <nav v-if="isAuthenticated" class="navbar navbar-expand-lg navbar-dark bg-dark shadow d-none d-lg-block">
       <div class="container-fluid">
-        <router-link class="navbar-brand fw-bold" to="/dashboard">
-          🏘️ Aleto Clan Portal
-        </router-link>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <router-link class="navbar-brand fw-bold" to="/dashboard">🏘️ Aleto Clan Portal</router-link>
+        <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
-            </li>
-
-            <!-- Registry Dropdown -->
             <li class="nav-item dropdown" v-if="isAdmin">
               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Registry</a>
               <ul class="dropdown-menu">
@@ -23,8 +14,6 @@
                 <li><router-link class="dropdown-item" to="/households">🏠 Households</router-link></li>
               </ul>
             </li>
-
-            <!-- Grants Dropdown -->
             <li class="nav-item dropdown" v-if="isAdmin">
               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Grants</a>
               <ul class="dropdown-menu">
@@ -33,8 +22,6 @@
                 <li><router-link class="dropdown-item" to="/payments">💳 Payment Runs</router-link></li>
               </ul>
             </li>
-
-            <!-- Modules Dropdown -->
             <li class="nav-item dropdown" v-if="isAdmin">
               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Modules</a>
               <ul class="dropdown-menu">
@@ -43,25 +30,12 @@
                 <li><router-link class="dropdown-item" to="/projects">🏗️ Projects</router-link></li>
               </ul>
             </li>
-
-            <li class="nav-item" v-if="isAdmin">
-              <router-link class="nav-link" to="/reports">📊 Reports</router-link>
-            </li>
-            <li class="nav-item" v-if="isAdmin">
-              <router-link class="nav-link" to="/announcements">📢 Notices</router-link>
-            </li>
-            <li class="nav-item" v-if="isAdmin || isAuditor">
-              <router-link class="nav-link" to="/audit">🔍 Audit</router-link>
-            </li>
-            <li class="nav-item" v-if="isAdmin">
-              <router-link class="nav-link" to="/users">⚙️ Users</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/messages">✉️ Messages</router-link>
-            </li>
-            <li class="nav-item" v-if="isGovOfficial">
-              <router-link class="nav-link" to="/reports">📊 Reports</router-link>
-            </li>
+            <li class="nav-item" v-if="isAdmin"><router-link class="nav-link" to="/reports">📊 Reports</router-link></li>
+            <li class="nav-item" v-if="isAdmin"><router-link class="nav-link" to="/announcements">📢 Notices</router-link></li>
+            <li class="nav-item" v-if="isAdmin || isAuditor"><router-link class="nav-link" to="/audit">🔍 Audit</router-link></li>
+            <li class="nav-item" v-if="isAdmin"><router-link class="nav-link" to="/users">⚙️ Users</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/messages">✉️ Messages</router-link></li>
+            <li class="nav-item" v-if="isGovOfficial"><router-link class="nav-link" to="/reports">📊 Reports</router-link></li>
           </ul>
           <div class="d-flex align-items-center">
             <span class="text-white me-3 small">{{ user?.name }}<br><span class="badge bg-secondary">{{ user?.role?.replace('_', ' ') }}</span></span>
@@ -70,8 +44,80 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid" style="padding-top: 20px;">
-      <router-view></router-view>
+
+    <!-- Mobile Top Bar -->
+    <div v-if="isAuthenticated" class="d-lg-none mobile-top-bar">
+      <div class="d-flex justify-content-between align-items-center px-3 py-2">
+        <router-link to="/dashboard" class="text-white text-decoration-none fw-bold">🏘️ Aleto Clan</router-link>
+        <div>
+          <router-link to="/messages" class="text-white me-3"><i class="bi bi-envelope"></i></router-link>
+          <button class="btn btn-sm btn-outline-light" @click="showMobileMenu = !showMobileMenu">☰</button>
+        </div>
+      </div>
+
+      <!-- Mobile Slide Menu -->
+      <div v-if="showMobileMenu" class="mobile-menu">
+        <div class="mobile-menu-overlay" @click="showMobileMenu = false"></div>
+        <div class="mobile-menu-content">
+          <div class="p-3 bg-dark text-white">
+            <h6 class="mb-0">{{ user?.name }}</h6>
+            <small class="text-muted text-capitalize">{{ user?.role?.replace('_', ' ') }}</small>
+          </div>
+          <div class="mobile-menu-items">
+            <router-link to="/dashboard" class="mobile-menu-item" @click="showMobileMenu=false">🏠 Dashboard</router-link>
+            <div class="mobile-menu-divider">Registry</div>
+            <router-link to="/villagers" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">👤 All Members</router-link>
+            <router-link to="/villagers/register" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">➕ Register New</router-link>
+            <router-link to="/households" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">🏠 Households</router-link>
+            <div class="mobile-menu-divider">Grants</div>
+            <router-link to="/grants" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">💰 Manage Grants</router-link>
+            <router-link to="/grants/history" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">📜 Grant History</router-link>
+            <router-link to="/payments" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">💳 Payment Runs</router-link>
+            <div class="mobile-menu-divider">Modules</div>
+            <router-link to="/healthcare" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">🏥 Healthcare</router-link>
+            <router-link to="/education" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">📚 Education</router-link>
+            <router-link to="/projects" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">🏗️ Projects</router-link>
+            <div class="mobile-menu-divider">Other</div>
+            <router-link to="/reports" class="mobile-menu-item" @click="showMobileMenu=false">📊 Reports</router-link>
+            <router-link to="/announcements" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">📢 Notices</router-link>
+            <router-link to="/messages" class="mobile-menu-item" @click="showMobileMenu=false">✉️ Messages</router-link>
+            <router-link to="/audit" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin || isAuditor">🔍 Audit Log</router-link>
+            <router-link to="/users" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">⚙️ Users</router-link>
+            <a href="#" class="mobile-menu-item text-danger" @click.prevent="logout">🚪 Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" :class="{'pb-mobile': isAuthenticated}">
+      <div class="container-fluid px-2 px-lg-3 pt-3">
+        <router-view></router-view>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div v-if="isAuthenticated && isAdmin" class="d-lg-none mobile-bottom-nav">
+      <router-link to="/dashboard" class="mobile-nav-item" :class="{active: $route.path === '/dashboard'}">
+        <span class="mobile-nav-icon">🏠</span>
+        <span class="mobile-nav-label">Home</span>
+      </router-link>
+      <router-link to="/villagers" class="mobile-nav-item" :class="{active: $route.path.startsWith('/villagers')}">
+        <span class="mobile-nav-icon">👥</span>
+        <span class="mobile-nav-label">Registry</span>
+      </router-link>
+      <router-link to="/villagers/register" class="mobile-nav-item mobile-nav-add">
+        <span class="mobile-nav-icon">➕</span>
+        <span class="mobile-nav-label">Register</span>
+      </router-link>
+      <router-link to="/grants" class="mobile-nav-item" :class="{active: $route.path.startsWith('/grants')}">
+        <span class="mobile-nav-icon">💰</span>
+        <span class="mobile-nav-label">Grants</span>
+      </router-link>
+      <router-link to="/messages" class="mobile-nav-item" :class="{active: $route.path === '/messages'}">
+        <span class="mobile-nav-icon">✉️</span>
+        <span class="mobile-nav-label">Messages</span>
+      </router-link>
     </div>
   </div>
 </template>
@@ -83,6 +129,7 @@ export default {
   data() {
     return {
       user: JSON.parse(localStorage.getItem('user') || 'null'),
+      showMobileMenu: false,
     };
   },
   computed: {
@@ -97,8 +144,44 @@ export default {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
       this.user = null;
+      this.showMobileMenu = false;
       this.$router.push('/login');
     },
   },
 };
 </script>
+
+<style>
+/* Mobile Top Bar */
+.mobile-top-bar { background: #1a1a2e; position: sticky; top: 0; z-index: 1000; }
+
+/* Mobile Slide Menu */
+.mobile-menu { position: fixed; inset: 0; z-index: 9999; }
+.mobile-menu-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+.mobile-menu-content { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: #fff; overflow-y: auto; box-shadow: -5px 0 15px rgba(0,0,0,0.2); }
+.mobile-menu-items { padding: 0; }
+.mobile-menu-item { display: block; padding: 14px 20px; color: #333; text-decoration: none; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+.mobile-menu-item:hover, .mobile-menu-item.router-link-active { background: #f8f9fa; color: #0d6efd; }
+.mobile-menu-divider { padding: 8px 20px; background: #f8f9fa; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 1px; }
+
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e0e0e0; display: flex; justify-content: space-around; align-items: center; padding: 6px 0; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+.mobile-nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #666; font-size: 10px; padding: 4px 8px; min-width: 50px; }
+.mobile-nav-item.active { color: #0d6efd; }
+.mobile-nav-icon { font-size: 20px; line-height: 1; }
+.mobile-nav-label { margin-top: 2px; }
+.mobile-nav-add .mobile-nav-icon { background: #0d6efd; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: -15px; box-shadow: 0 2px 8px rgba(13,110,253,0.3); }
+
+/* Main content padding for mobile bottom nav */
+.pb-mobile { padding-bottom: 70px; }
+
+/* Mobile responsive tables */
+@media (max-width: 768px) {
+  .table-responsive { font-size: 13px; }
+  h2 { font-size: 1.4rem; }
+  .card-body { padding: 0.75rem; }
+  .btn-sm { padding: 0.4rem 0.8rem; font-size: 13px; }
+  .form-control, .form-select { font-size: 16px; } /* Prevents iOS zoom */
+  .container-fluid { padding-left: 8px; padding-right: 8px; }
+}
+</style>
