@@ -56,6 +56,40 @@
             </div>
           </div>
 
+          <!-- Spouse & Children (shown when married) -->
+          <div v-if="form.marital_status === 'married' || form.marital_status === 'widowed'" class="border rounded p-3 mb-3 bg-light">
+            <h6 class="text-primary mb-3">Family Members</h6>
+            <div class="row mb-2">
+              <div class="col-md-6 mb-2">
+                <label class="form-label small">Spouse Name</label>
+                <input v-model="form.spouse_name" type="text" class="form-control" placeholder="Full name of spouse">
+              </div>
+              <div class="col-md-6 mb-2">
+                <label class="form-label small">Spouse Occupation</label>
+                <input v-model="form.spouse_occupation" type="text" class="form-control" placeholder="Optional">
+              </div>
+            </div>
+            <label class="form-label small">Children</label>
+            <div v-for="(child, index) in form.children" :key="index" class="row g-2 mb-2 align-items-end">
+              <div class="col-5">
+                <input v-model="child.name" class="form-control form-control-sm" :placeholder="'Child ' + (index+1) + ' name'">
+              </div>
+              <div class="col-3">
+                <select v-model="child.gender" class="form-select form-select-sm">
+                  <option value="son">Son</option>
+                  <option value="daughter">Daughter</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <input v-model="child.dob" type="date" class="form-control form-control-sm">
+              </div>
+              <div class="col-1">
+                <button type="button" class="btn btn-outline-danger btn-sm" @click="form.children.splice(index, 1)">x</button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm" @click="form.children.push({name:'', gender:'son', dob:''})">+ Add Child</button>
+          </div>
+
           <!-- Identity & Fraud Prevention -->
           <h5 class="mb-3 mt-4 text-primary">Identity & Verification</h5>
           <div class="row">
@@ -192,6 +226,7 @@ export default {
         nin: '', phone_number: '', email: '', bank_account_number: '', bank_name: '',
         marital_status: '', occupation: '', education_level: '', health_status: '',
         fingerprint_data: '', facial_photo: '',
+        spouse_name: '', spouse_occupation: '', children: [],
       },
       errors: {},
       duplicateError: null,
@@ -227,12 +262,27 @@ export default {
         this.successId = data.data.unique_id;
         this.registrationDate = new Date(data.data.created_at).toLocaleString();
         this.registeredBy = JSON.parse(localStorage.getItem('user'))?.name || 'Admin';
+
+        // Save family members if married
+        if (this.form.spouse_name || this.form.children.length) {
+          const uid = data.data.unique_id;
+          if (this.form.spouse_name) {
+            await axios.post(`/villagers/${uid}/family`, { full_name: this.form.spouse_name, relationship: 'spouse', occupation: this.form.spouse_occupation || null });
+          }
+          for (const child of this.form.children) {
+            if (child.name) {
+              await axios.post(`/villagers/${uid}/family`, { full_name: child.name, relationship: child.gender === 'daughter' ? 'daughter' : 'son', date_of_birth: child.dob || null });
+            }
+          }
+        }
+
         this.form = {
           full_name: '', date_of_birth: '', gender: '', household_id: '',
           village: '', ward: '', zone: '',
           nin: '', phone_number: '', email: '', bank_account_number: '', bank_name: '',
           marital_status: '', occupation: '', education_level: '', health_status: '',
           fingerprint_data: '', facial_photo: '',
+          spouse_name: '', spouse_occupation: '', children: [],
         };
         this.passportPreview = null;
         this.passportFile = null;
