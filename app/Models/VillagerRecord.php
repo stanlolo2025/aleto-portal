@@ -96,6 +96,11 @@ class VillagerRecord extends Model
         return $this->hasMany(BeneficiaryListItem::class);
     }
 
+    public function familyMembers()
+    {
+        return $this->hasMany(FamilyMember::class);
+    }
+
     public function registeredByUser()
     {
         return $this->belongsTo(User::class, 'registered_by');

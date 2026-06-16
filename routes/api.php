@@ -49,6 +49,11 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\SessionTimeout::class])-
         Route::post('/villagers/{uniqueId}/proxy', [ProxyController::class, 'store']);
         Route::delete('/villagers/{uniqueId}/proxy', [ProxyController::class, 'destroy']);
 
+        // Family members
+        Route::get('/villagers/{uniqueId}/family', [\App\Http\Controllers\Api\VillagerController::class, 'getFamily']);
+        Route::post('/villagers/{uniqueId}/family', [\App\Http\Controllers\Api\VillagerController::class, 'addFamily']);
+        Route::delete('/villagers/family/{id}', [\App\Http\Controllers\Api\VillagerController::class, 'removeFamily']);
+
         // Grant management
         Route::get('/grants', [GrantController::class, 'index']);
         Route::post('/grants', [GrantController::class, 'store']);

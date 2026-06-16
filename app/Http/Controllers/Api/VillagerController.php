@@ -141,4 +141,32 @@ class VillagerController extends Controller
 
         return response()->json(['data' => $result]);
     }
+
+    public function getFamily(string $uniqueId): JsonResponse
+    {
+        $villager = VillagerRecord::where('unique_id', $uniqueId)->firstOrFail();
+        return response()->json(['data' => $villager->familyMembers]);
+    }
+
+    public function addFamily(Request $request, string $uniqueId): JsonResponse
+    {
+        $villager = VillagerRecord::where('unique_id', $uniqueId)->firstOrFail();
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'relationship' => 'required|in:spouse,son,daughter,other',
+            'date_of_birth' => 'nullable|date',
+            'occupation' => 'nullable|string|max:255',
+        ]);
+        $member = \App\Models\FamilyMember::create([
+            'villager_record_id' => $villager->id,
+            ...$request->only(['full_name', 'relationship', 'date_of_birth', 'occupation']),
+        ]);
+        return response()->json(['message' => 'Family member added', 'data' => $member], 201);
+    }
+
+    public function removeFamily(int $id): JsonResponse
+    {
+        \App\Models\FamilyMember::findOrFail($id)->delete();
+        return response()->json(['message' => 'Family member removed']);
+    }
 }

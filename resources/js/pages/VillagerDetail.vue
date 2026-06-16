@@ -225,6 +225,39 @@
         <!-- Proxy Account Card -->
         <div class="card shadow-sm mb-4" v-if="villager.status === 'active'">
           <div class="card-header bg-light">
+            <h6 class="mb-0">👨‍👩‍👧‍👦 Family Members</h6>
+          </div>
+          <div class="card-body">
+            <div v-if="familyMembers.length">
+              <div v-for="fm in familyMembers" :key="fm.id" class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <div>
+                  <strong>{{ fm.full_name }}</strong>
+                  <br><small class="text-muted text-capitalize">{{ fm.relationship }} {{ fm.date_of_birth ? '- Age: ' + calcAge(fm.date_of_birth) : '' }}</small>
+                  <span v-if="fm.occupation" class="ms-1 badge bg-light text-dark">{{ fm.occupation }}</span>
+                </div>
+                <button class="btn btn-outline-danger btn-sm" @click="removeFamilyMember(fm.id)">x</button>
+              </div>
+            </div>
+            <div v-else><p class="text-muted small mb-2">No family members recorded</p></div>
+            <button class="btn btn-outline-primary btn-sm mt-2" @click="showFamilyForm = !showFamilyForm">+ Add Family Member</button>
+            <div v-if="showFamilyForm" class="mt-2">
+              <input v-model="familyForm.full_name" class="form-control form-control-sm mb-1" placeholder="Full Name">
+              <select v-model="familyForm.relationship" class="form-select form-select-sm mb-1">
+                <option value="spouse">Spouse</option>
+                <option value="son">Son</option>
+                <option value="daughter">Daughter</option>
+                <option value="other">Other</option>
+              </select>
+              <input v-model="familyForm.date_of_birth" type="date" class="form-control form-control-sm mb-1" placeholder="DOB">
+              <input v-model="familyForm.occupation" class="form-control form-control-sm mb-1" placeholder="Occupation (optional)">
+              <button class="btn btn-success btn-sm" @click="addFamilyMember">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proxy Account Card -->
+        <div class="card shadow-sm mb-4" v-if="villager.status === 'active'">
+          <div class="card-header bg-light">
             <h6 class="mb-0">🤝 Proxy Account</h6>
           </div>
           <div class="card-body">
@@ -278,6 +311,9 @@ export default {
       archiveReason: '',
       showProxyForm: false,
       proxyForm: { representative_name: '', relationship: '', proxy_bank_name: '', proxy_bank_account: '' },
+      familyMembers: [],
+      showFamilyForm: false,
+      familyForm: { full_name: '', relationship: 'spouse', date_of_birth: '', occupation: '' },
     };
   },
   computed: {
@@ -305,6 +341,7 @@ export default {
     try {
       const { data } = await axios.get(`/villagers/${id}`);
       this.villager = data.data;
+      await this.loadFamily();
     } catch (e) {
       alert('Failed to load record: ' + (e.response?.data?.message || e.message));
     }
@@ -348,6 +385,33 @@ export default {
       } catch (e) {
         alert(e.response?.data?.message || 'Error');
       }
+    },
+    async loadFamily() {
+      try {
+        const { data } = await axios.get(`/villagers/${this.villager.unique_id}/family`);
+        this.familyMembers = data.data || [];
+      } catch (e) { this.familyMembers = []; }
+    },
+    async addFamilyMember() {
+      try {
+        await axios.post(`/villagers/${this.villager.unique_id}/family`, this.familyForm);
+        this.familyForm = { full_name: '', relationship: 'spouse', date_of_birth: '', occupation: '' };
+        this.showFamilyForm = false;
+        await this.loadFamily();
+      } catch (e) { alert(e.response?.data?.message || 'Error'); }
+    },
+    async removeFamilyMember(id) {
+      if (!confirm('Remove this family member?')) return;
+      await axios.delete(`/villagers/family/${id}`);
+      await this.loadFamily();
+    },
+    calcAge(dob) {
+      if (!dob) return '';
+      const today = new Date(); const birth = new Date(dob);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
     },
   },
 };
