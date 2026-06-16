@@ -26,7 +26,14 @@ class DashboardController extends Controller
 
         $totalGrants = Grant::count();
         $activeGrants = Grant::where('status', 'active')->count();
-        $totalDisbursed = GrantHistory::where('action_type', 'payment')->sum('amount');
+
+        // Calculate total disbursed from multiple sources
+        $disbursedFromHistory = GrantHistory::where('action_type', 'payment')->sum('amount');
+        $disbursedFromPaymentRuns = \App\Models\PaymentRunItem::where('status', 'paid')->sum('amount');
+        $disbursedFromApprovedLists = \App\Models\BeneficiaryListItem::whereHas('beneficiaryList', fn($q) => $q->where('status', 'approved'))->sum('grant_amount');
+
+        // Use the highest value (approved lists total is the most accurate)
+        $totalDisbursed = max($disbursedFromHistory, $disbursedFromPaymentRuns, $disbursedFromApprovedLists);
 
         $pendingFlags = FlaggedRegistration::where('resolution', 'pending')->count();
         $totalProjects = Project::count();
