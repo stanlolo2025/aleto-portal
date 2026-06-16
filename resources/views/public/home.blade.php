@@ -69,8 +69,23 @@
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2rem; }
-            .hero-section { height: 70vh; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-content p { font-size: 1rem; }
+            .hero-section { height: 65vh; min-height: 400px; }
+            .section-title { font-size: 1.4rem; }
+            .feature-card { margin-bottom: 0; }
+            .feature-icon { width: 45px; height: 45px; font-size: 1.2rem; }
+            .navbar-custom .navbar-brand { font-size: 1.1rem; }
+            .stat-card h2 { font-size: 1.8rem; }
+            .footer { padding: 30px 0 15px; }
+            .footer .col-md-4 { margin-bottom: 20px; }
+            .input-group-lg .form-control { font-size: 16px; }
+            .btn-lg { font-size: 14px; padding: 0.6rem 1rem; }
+            .card { border-radius: 10px; }
+            .member-photo { width: 55px; height: 55px; }
+            .member-photo-placeholder { width: 55px; height: 55px; font-size: 14px; }
+            .whatsapp-float { width: 50px; height: 50px; bottom: 15px; right: 15px; }
+            .whatsapp-float i { font-size: 1.6rem; }
         }
     </style>
 </head>
