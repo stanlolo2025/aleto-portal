@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'permissions',
         'phone',
         'failed_login_attempts',
         'locked_until',
@@ -36,6 +37,7 @@ class User extends Authenticatable
             'locked_until' => 'datetime',
             'last_activity_at' => 'datetime',
             'failed_login_attempts' => 'integer',
+            'permissions' => 'array',
         ];
     }
 

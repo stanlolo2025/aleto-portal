@@ -71,4 +71,62 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Role updated', 'data' => $user]);
     }
+
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'phone' => 'sometimes|nullable|string',
+            'permissions' => 'sometimes|nullable|array',
+        ]);
+
+        $user->update($request->only(['name', 'email', 'phone', 'permissions']));
+
+        $this->auditLogger->log('user_updated', $request->user()->id, [
+            'description' => "User updated: {$user->username}",
+            'metadata' => ['user_id' => $user->id],
+        ]);
+
+        return response()->json(['message' => 'User updated', 'data' => $user]);
+    }
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'],
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 422);
+        }
+
+        $user->update(['password' => Hash::make($request->new_password)]);
+
+        $this->auditLogger->log('password_changed', $user->id, [
+            'description' => "Password changed for: {$user->username}",
+        ]);
+
+        return response()->json(['message' => 'Password changed successfully']);
+    }
+
+    public function resetPassword(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'new_password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'],
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update(['password' => Hash::make($request->new_password)]);
+
+        $this->auditLogger->log('password_reset', $request->user()->id, [
+            'description' => "Password reset by admin for: {$user->username}",
+        ]);
+
+        return response()->json(['message' => "Password reset for {$user->username}"]);
+    }
 }

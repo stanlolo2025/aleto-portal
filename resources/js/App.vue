@@ -35,6 +35,7 @@
             <li class="nav-item" v-if="isAdmin || isAuditor"><router-link class="nav-link" to="/audit">🔍 Audit</router-link></li>
             <li class="nav-item" v-if="isAdmin"><router-link class="nav-link" to="/users">⚙️ Users</router-link></li>
             <li class="nav-item"><router-link class="nav-link" to="/messages">✉️ Messages</router-link></li>
+            <li class="nav-item"><router-link class="nav-link" to="/settings">⚙️ Settings</router-link></li>
             <li class="nav-item" v-if="isGovOfficial"><router-link class="nav-link" to="/reports">📊 Reports</router-link></li>
           </ul>
           <div class="d-flex align-items-center">
@@ -83,6 +84,7 @@
             <router-link to="/messages" class="mobile-menu-item" @click="showMobileMenu=false">✉️ Messages</router-link>
             <router-link to="/audit" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin || isAuditor">🔍 Audit Log</router-link>
             <router-link to="/users" class="mobile-menu-item" @click="showMobileMenu=false" v-if="isAdmin">⚙️ Users</router-link>
+            <router-link to="/settings" class="mobile-menu-item" @click="showMobileMenu=false">🔧 Settings</router-link>
             <a href="#" class="mobile-menu-item text-danger" @click.prevent="logout">🚪 Logout</a>
           </div>
         </div>

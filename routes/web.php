@@ -27,3 +27,4 @@ Route::get('/announcements', function () { return view('app'); });
 Route::get('/messages', function () { return view('app'); });
 Route::get('/audit', function () { return view('app'); });
 Route::get('/users', function () { return view('app'); });
+Route::get('/settings', function () { return view('app'); });

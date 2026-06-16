@@ -80,6 +80,11 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\SessionTimeout::class])-
         Route::get('/users', [UserController::class, 'index']);
         Route::post('/users', [UserController::class, 'store']);
         Route::put('/users/{id}/role', [UserController::class, 'changeRole']);
+        Route::put('/users/{id}', [UserController::class, 'update']);
+        Route::post('/users/{id}/reset-password', [UserController::class, 'resetPassword']);
+
+    // Change own password (all authenticated users)
+    Route::post('/auth/change-password', [UserController::class, 'changePassword']);
 
         // Healthcare Module
         Route::get('/healthcare/medical-records', [\App\Http\Controllers\Api\HealthcareController::class, 'getMedicalRecords']);

@@ -14,6 +14,7 @@ import ReportsPage from './pages/ReportsPage.vue';
 import AnnouncementsPage from './pages/AnnouncementsPage.vue';
 import MessagesPage from './pages/MessagesPage.vue';
 import AuditLogViewer from './pages/AuditLogViewer.vue';
+import SettingsPage from './pages/SettingsPage.vue';
 import UserManager from './pages/UserManager.vue';
 
 const routes = [
@@ -35,6 +36,7 @@ const routes = [
     { path: '/messages', component: MessagesPage, meta: { requiresAuth: true } },
     { path: '/audit', component: AuditLogViewer, meta: { requiresAuth: true, roles: ['admin', 'auditor'] } },
     { path: '/users', component: UserManager, meta: { requiresAuth: true, roles: ['admin'] } },
+    { path: '/settings', component: SettingsPage, meta: { requiresAuth: true } },
 ];
 
 export default routes;
