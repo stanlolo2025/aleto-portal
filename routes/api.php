@@ -20,6 +20,11 @@ Route::post('/enquiries', [\App\Http\Controllers\Api\EnquiryController::class, '
 Route::post('/enquiries/track', [\App\Http\Controllers\Api\EnquiryController::class, 'track']);
 Route::get('/public/announcements', [\App\Http\Controllers\Api\AnnouncementController::class, 'index']);
 
+// Public access module
+Route::post('/public/search', [\App\Http\Controllers\Api\PublicController::class, 'search']);
+Route::get('/public/stats', [\App\Http\Controllers\Api\PublicController::class, 'stats']);
+Route::get('/public/reports', [\App\Http\Controllers\Api\PublicController::class, 'reports']);
+
 // Export routes (auth via token query param for browser download)
 Route::get('/grants/{grantId}/beneficiaries/export/{format}', [GrantController::class, 'exportList']);
 

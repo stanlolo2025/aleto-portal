@@ -89,6 +89,8 @@
                 <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#verify">Verify Member</a></li>
+                <li class="nav-item"><a class="nav-link" href="#transparency">Transparency</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="#track">Track Ticket</a></li>
             </ul>
@@ -252,8 +254,43 @@
     </div>
 </section>
 
+<!-- Verify Membership -->
+<section class="py-5 bg-light" id="verify">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h2 class="section-title text-center mb-4">Verify Membership</h2>
+                <p class="text-muted">Enter a member's Unique ID to verify their registration. Only non-sensitive details are shown.</p>
+                <div class="input-group mt-4 mb-3" style="max-width:500px; margin:0 auto;">
+                    <input type="text" class="form-control form-control-lg" id="verifyInput" placeholder="Enter Unique ID (e.g. ALC-20260615-00001)">
+                    <button class="btn btn-success btn-lg" onclick="verifyMember()"><i class="bi bi-shield-check"></i> Verify</button>
+                </div>
+                <div id="verifyResult" class="mt-4" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Transparency Dashboard -->
+<section class="py-5" id="transparency">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Transparency Dashboard</h2>
+        <p class="text-center text-muted mb-4">Real-time community statistics — verifiable by all members.</p>
+        <div class="row g-4 justify-content-center" id="statsCards">
+            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-primary" id="statTotal">-</h3><p class="text-muted mb-0">Total Registered</p></div></div>
+            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-success" id="statActive">-</h3><p class="text-muted mb-0">Active Members</p></div></div>
+            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-secondary" id="statDeceased">-</h3><p class="text-muted mb-0">Deceased</p></div></div>
+            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-warning" id="statArchived">-</h3><p class="text-muted mb-0">Archived</p></div></div>
+        </div>
+        <div class="mt-4" id="grantStatsSection" style="display:none;">
+            <h5 class="text-center mb-3">Grant Beneficiaries</h5>
+            <div class="row g-3 justify-content-center" id="grantStatsCards"></div>
+        </div>
+    </div>
+</section>
+
 <!-- Track Ticket -->
-<section class="py-5" id="track">
+<section class="py-5 bg-light" id="track">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 text-center">
@@ -282,6 +319,8 @@
                 <ul class="list-unstyled">
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#services">Our Services</a></li>
+                    <li><a href="#verify">Verify Member</a></li>
+                    <li><a href="#transparency">Transparency</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="#track">Track Ticket</a></li>
                 </ul>
@@ -332,6 +371,67 @@
                 document.getElementById('announcementBar').style.display = 'block';
             }
         }).catch(() => {});
+
+    // Load transparency stats
+    fetch('/api/public/stats')
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('statTotal').textContent = data.total_members;
+            document.getElementById('statActive').textContent = data.active;
+            document.getElementById('statDeceased').textContent = data.deceased;
+            document.getElementById('statArchived').textContent = data.archived;
+            if (data.grant_stats && data.grant_stats.length > 0) {
+                document.getElementById('grantStatsSection').style.display = 'block';
+                const container = document.getElementById('grantStatsCards');
+                data.grant_stats.forEach(g => {
+                    container.innerHTML += `<div class="col-md-4"><div class="card shadow-sm p-3 text-center"><h5 class="text-info">${g.beneficiaries}</h5><p class="text-muted small mb-0">${g.name}</p></div></div>`;
+                });
+            }
+        }).catch(() => {});
+
+    // Verify Membership
+    function verifyMember() {
+        const uid = document.getElementById('verifyInput').value.trim();
+        if (!uid) return alert('Please enter a Unique ID');
+        fetch('/api/public/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ unique_id: uid })
+        })
+        .then(r => r.json())
+        .then(data => {
+            const el = document.getElementById('verifyResult');
+            el.style.display = 'block';
+            if (data.data) {
+                const d = data.data;
+                const statusColor = { active: 'success', deceased: 'secondary', archived: 'warning' }[d.status] || 'secondary';
+                el.innerHTML = `
+                    <div class="card text-start shadow-sm" style="max-width:500px; margin:0 auto;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">${d.full_name}</h5>
+                                <span class="badge bg-${statusColor}">${d.status.toUpperCase()}</span>
+                            </div>
+                            <table class="table table-sm mb-0">
+                                <tr><th>Unique ID</th><td><code>${d.unique_id}</code></td></tr>
+                                <tr><th>Household</th><td>${d.household_id}</td></tr>
+                                <tr><th>Gender</th><td>${d.gender}</td></tr>
+                                <tr><th>Village</th><td>${d.village || 'N/A'}</td></tr>
+                                <tr><th>Ward</th><td>${d.ward || 'N/A'}</td></tr>
+                                <tr><th>Registered</th><td>${new Date(d.created_at).toLocaleDateString()}</td></tr>
+                            </table>
+                            <p class="text-success mt-2 mb-0"><i class="bi bi-check-circle"></i> This member is verified in the Aleto Clan Registry.</p>
+                        </div>
+                    </div>`;
+            } else {
+                el.innerHTML = `<div class="alert alert-danger" style="max-width:500px; margin:0 auto;"><i class="bi bi-x-circle"></i> No member found with this ID. Please check and try again.</div>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('verifyResult').style.display = 'block';
+            document.getElementById('verifyResult').innerHTML = `<div class="alert alert-danger" style="max-width:500px; margin:0 auto;">Member not found. Please verify the ID.</div>`;
+        });
+    }
 
     // Submit Enquiry
     function submitEnquiry(e) {
