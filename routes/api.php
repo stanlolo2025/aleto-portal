@@ -24,6 +24,7 @@ Route::get('/public/announcements', [\App\Http\Controllers\Api\AnnouncementContr
 Route::post('/public/search', [\App\Http\Controllers\Api\PublicController::class, 'search']);
 Route::get('/public/stats', [\App\Http\Controllers\Api\PublicController::class, 'stats']);
 Route::get('/public/reports', [\App\Http\Controllers\Api\PublicController::class, 'reports']);
+Route::get('/public/members', [\App\Http\Controllers\Api\PublicController::class, 'members']);
 
 // Export routes (auth via token query param for browser download)
 Route::get('/grants/{grantId}/beneficiaries/export/{format}', [GrantController::class, 'exportList']);

@@ -72,4 +72,23 @@ class PublicController extends Controller
 
         return response()->json(['recent_grants' => $recentGrants]);
     }
+
+    // Public members grid (photo, name, ID only)
+    public function members(Request $request): JsonResponse
+    {
+        $query = VillagerRecord::where('status', 'active')
+            ->select('unique_id', 'full_name', 'passport_photo', 'village', 'created_at');
+
+        if ($request->filled('search')) {
+            $query->where('full_name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('village')) {
+            $query->where('village', $request->village);
+        }
+
+        $members = $query->orderBy('full_name')->paginate($request->get('per_page', 24));
+
+        return response()->json($members);
+    }
 }

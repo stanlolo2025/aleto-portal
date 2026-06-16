@@ -59,6 +59,12 @@
 
         /* Announcements Ticker */
         .announcement-bar { background: var(--accent); color: #000; padding: 8px 0; font-weight: 500; overflow: hidden; }
+
+        /* Member Cards */
+        .member-card { transition: transform 0.2s; border-radius: 12px; overflow: hidden; }
+        .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .member-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #e0e0e0; margin: 0 auto; display: block; }
+        .member-photo-placeholder { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #1a5276, #27ae60); color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-weight: bold; font-size: 18px; }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
@@ -88,8 +94,8 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#verify">Verify Member</a></li>
+                <li class="nav-item"><a class="nav-link" href="/members">Members</a></li>
+                <li class="nav-item"><a class="nav-link" href="#verify">Verify</a></li>
                 <li class="nav-item"><a class="nav-link" href="#transparency">Transparency</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="#track">Track Ticket</a></li>
@@ -254,6 +260,18 @@
     </div>
 </section>
 
+<!-- Community Members Preview -->
+<section class="py-5" id="members">
+    <div class="container">
+        <h2 class="section-title text-center mb-3">Our Community Members</h2>
+        <p class="text-center text-muted mb-4">Registered and verified members of the Aleto Clan community.</p>
+        <div class="row g-3 justify-content-center" id="membersGrid"></div>
+        <div class="text-center mt-4">
+            <a href="/members" class="btn btn-primary btn-lg">View All Members <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
 <!-- Verify Membership -->
 <section class="py-5 bg-light" id="verify">
     <div class="container">
@@ -370,6 +388,30 @@
                 document.getElementById('tickerContent').textContent = ticker;
                 document.getElementById('announcementBar').style.display = 'block';
             }
+        }).catch(() => {});
+
+    // Load community members preview
+    fetch('/api/public/members?per_page=12')
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById('membersGrid');
+            (data.data || []).forEach(m => {
+                const photo = m.passport_photo ? `/storage/${m.passport_photo}` : '';
+                const initials = m.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                grid.innerHTML += `
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="card text-center shadow-sm h-100 member-card">
+                            <div class="card-body p-2">
+                                ${photo
+                                    ? `<img src="${photo}" class="member-photo" alt="${m.full_name}">`
+                                    : `<div class="member-photo-placeholder">${initials}</div>`
+                                }
+                                <p class="mb-0 mt-2 small fw-semibold">${m.full_name}</p>
+                                <p class="mb-0 text-muted" style="font-size:10px;"><code>${m.unique_id}</code></p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
         }).catch(() => {});
 
     // Load transparency stats

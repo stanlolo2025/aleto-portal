@@ -7,6 +7,11 @@ Route::get('/', function () {
     return view('public.home');
 });
 
+// Public members page
+Route::get('/members', function () {
+    return view('public.members');
+});
+
 // Admin SPA (Vue.js) — all routes under /login, /dashboard, etc.
 Route::get('/login', function () { return view('app'); });
 Route::get('/dashboard', function () { return view('app'); });
