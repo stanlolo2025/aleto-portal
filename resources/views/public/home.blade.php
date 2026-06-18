@@ -227,7 +227,7 @@
                 <div class="mt-4">
                     <div class="d-flex mb-3"><i class="bi bi-telephone-fill text-primary fs-5 me-3"></i><div><strong>Phone</strong><br>+234 800 000 0000</div></div>
                     <div class="d-flex mb-3"><i class="bi bi-envelope-fill text-primary fs-5 me-3"></i><div><strong>Email</strong><br>info@aletoclan.org</div></div>
-                    <div class="d-flex mb-3"><i class="bi bi-geo-alt-fill text-primary fs-5 me-3"></i><div><strong>Office</strong><br>Aleto Clan Community Hall, Rivers State</div></div>
+                    <div class="d-flex mb-3"><i class="bi bi-geo-alt-fill text-primary fs-5 me-3"></i><div><strong>Office</strong><br>Aleto Clan Community Hall, Eleme, Rivers State</div></div>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -362,7 +362,7 @@
                 <h5>Contact Info</h5>
                 <p class="small mb-1"><i class="bi bi-telephone"></i> +234 800 000 0000</p>
                 <p class="small mb-1"><i class="bi bi-envelope"></i> info@aletoclan.org</p>
-                <p class="small"><i class="bi bi-geo-alt"></i> Aleto Clan, Rivers State, Nigeria</p>
+                <p class="small"><i class="bi bi-geo-alt"></i> Aleto Clan Community Hall, Eleme, Rivers State, Nigeria</p>
             </div>
         </div>
         <hr style="border-color: #333;">
