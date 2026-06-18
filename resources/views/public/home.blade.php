@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -101,7 +101,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="#">🏘️ Aleto Clan Portal</a>
+        <a class="navbar-brand" href="#">ðŸ˜ï¸ Aleto Clan Portal</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -151,7 +151,7 @@
             <div class="col-lg-6">
                 <h2 class="section-title mb-4">About Aleto Clan Portal</h2>
                 <p class="lead">A digital social registry that captures every member of the Aleto Clan community and ensures transparent, fair distribution of government and community grants.</p>
-                <p>Our portal prevents fraud, eliminates ghost beneficiaries, and provides a complete audit trail for every transaction. Whether it's financial stipends, healthcare support, educational scholarships, or community development projects — every naira is tracked and accounted for.</p>
+                <p>Our portal prevents fraud, eliminates ghost beneficiaries, and provides a complete audit trail for every transaction. Whether it's financial stipends, healthcare support, educational scholarships, or community development projects â€” every naira is tracked and accounted for.</p>
                 <div class="row mt-4">
                     <div class="col-6"><div class="d-flex align-items-center"><i class="bi bi-shield-check text-success fs-3 me-2"></i><span>Fraud Prevention</span></div></div>
                     <div class="col-6"><div class="d-flex align-items-center"><i class="bi bi-people text-primary fs-3 me-2"></i><span>Full Registry</span></div></div>
@@ -173,44 +173,44 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-primary bg-opacity-10 text-primary">👥</div>
+                    <div class="feature-icon bg-primary bg-opacity-10 text-primary">ðŸ‘¥</div>
                     <h5>Community Registry</h5>
                     <p class="text-muted">Every clan member is registered with unique identification, biometrics, and household details. Complete demographic records.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-success bg-opacity-10 text-success">💰</div>
+                    <div class="feature-icon bg-success bg-opacity-10 text-success">ðŸ’°</div>
                     <h5>Grant Distribution</h5>
                     <p class="text-muted">Transparent selection of beneficiaries for government and community grants. Verified payment tracking to prevent fraud.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-danger bg-opacity-10 text-danger">🛡️</div>
+                    <div class="feature-icon bg-danger bg-opacity-10 text-danger">ðŸ›¡ï¸</div>
                     <h5>Fraud Prevention</h5>
                     <p class="text-muted">Biometric verification, duplicate detection, NIN cross-referencing. No ghost beneficiaries or double payments.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-info bg-opacity-10 text-info">🏥</div>
+                    <div class="feature-icon bg-info bg-opacity-10 text-info">ðŸ¥</div>
                     <h5>Healthcare Support</h5>
                     <p class="text-muted">Medical records, clinic visits, preventive care alerts, and health-related grants for community welfare.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-warning bg-opacity-10 text-warning">📚</div>
+                    <div class="feature-icon bg-warning bg-opacity-10 text-warning">ðŸ“š</div>
                     <h5>Education Programs</h5>
                     <p class="text-muted">Student enrollment, scholarship management, exam tracking, and adult literacy programs.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-secondary bg-opacity-10 text-secondary">🏗️</div>
+                    <div class="feature-icon bg-secondary bg-opacity-10 text-secondary">ðŸ—ï¸</div>
                     <h5>Development Projects</h5>
-                    <p class="text-muted">Track community infrastructure projects — water, roads, electrification — with beneficiary mapping and impact analytics.</p>
+                    <p class="text-muted">Track community infrastructure projects â€” water, roads, electrification â€” with beneficiary mapping and impact analytics.</p>
                 </div>
             </div>
         </div>
@@ -226,7 +226,7 @@
                 <p>Have a complaint, enquiry, or suggestion? Fill out the form and we'll respond promptly. You'll receive a ticket ID to track your submission.</p>
                 <div class="mt-4">
                     <div class="d-flex mb-3"><i class="bi bi-telephone-fill text-primary fs-5 me-3"></i><div><strong>Phone</strong><br>+234 800 000 0000</div></div>
-                    <div class="d-flex mb-3"><i class="bi bi-envelope-fill text-primary fs-5 me-3"></i><div><strong>Email</strong><br>info@aletoclan.org</div></div>
+                    <div class="d-flex mb-3"><i class="bi bi-envelope-fill text-primary fs-5 me-3"></i><div><strong>Email</strong><br>info@aletoclan.com</div></div>
                     <div class="d-flex mb-3"><i class="bi bi-geo-alt-fill text-primary fs-5 me-3"></i><div><strong>Office</strong><br>Aleto Clan Community Hall, Eleme, Rivers State</div></div>
                 </div>
             </div>
@@ -308,7 +308,7 @@
 <section class="py-5" id="transparency">
     <div class="container">
         <h2 class="section-title text-center mb-5">Transparency Dashboard</h2>
-        <p class="text-center text-muted mb-4">Real-time community statistics — verifiable by all members.</p>
+        <p class="text-center text-muted mb-4">Real-time community statistics â€” verifiable by all members.</p>
         <div class="row g-4 justify-content-center" id="statsCards">
             <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-primary" id="statTotal">-</h3><p class="text-muted mb-0">Total Registered</p></div></div>
             <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-success" id="statActive">-</h3><p class="text-muted mb-0">Active Members</p></div></div>
@@ -344,7 +344,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4">
-                <h5>🏘️ Aleto Clan Portal</h5>
+                <h5>ðŸ˜ï¸ Aleto Clan Portal</h5>
                 <p class="small">A digital social registry ensuring transparent and fair distribution of grants and stipends to community members.</p>
             </div>
             <div class="col-md-4 mb-4">
@@ -361,7 +361,7 @@
             <div class="col-md-4 mb-4">
                 <h5>Contact Info</h5>
                 <p class="small mb-1"><i class="bi bi-telephone"></i> +234 800 000 0000</p>
-                <p class="small mb-1"><i class="bi bi-envelope"></i> info@aletoclan.org</p>
+                <p class="small mb-1"><i class="bi bi-envelope"></i> info@aletoclan.com</p>
                 <p class="small"><i class="bi bi-geo-alt"></i> Aleto Clan Community Hall, Eleme, Rivers State, Nigeria</p>
             </div>
         </div>
@@ -399,7 +399,7 @@
         .then(r => r.json())
         .then(data => {
             if (data.length > 0) {
-                const ticker = data.map(a => `📢 ${a.title}: ${a.content}`).join('   |   ');
+                const ticker = data.map(a => `ðŸ“¢ ${a.title}: ${a.content}`).join('   |   ');
                 document.getElementById('tickerContent').textContent = ticker;
                 document.getElementById('announcementBar').style.display = 'block';
             }
@@ -511,7 +511,7 @@
         .then(r => r.json())
         .then(data => {
             document.getElementById('enqResult').style.display = 'block';
-            document.getElementById('enqResult').innerHTML = `<div class="alert alert-success"><strong>✅ Submitted!</strong><br>Your ticket ID is: <code>${data.ticket_id}</code><br>Save this ID to track your enquiry status.</div>`;
+            document.getElementById('enqResult').innerHTML = `<div class="alert alert-success"><strong>âœ… Submitted!</strong><br>Your ticket ID is: <code>${data.ticket_id}</code><br>Save this ID to track your enquiry status.</div>`;
             document.getElementById('enquiryForm').reset();
             btn.disabled = false; btn.textContent = 'Submit Enquiry';
         })
@@ -562,3 +562,4 @@
 </script>
 </body>
 </html>
+
