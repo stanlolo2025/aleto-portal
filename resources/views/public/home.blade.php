@@ -189,9 +189,9 @@
         <h2 class="text-3xl font-bold text-secondary mb-6">Contact Us</h2>
         <p class="text-muted-foreground mb-8">Have a complaint, enquiry, or suggestion? Fill out the form and we'll respond promptly.</p>
         <div class="space-y-4">
-          <div class="flex gap-3"><iconify-icon icon="lucide:phone" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Phone</p><p class="text-muted-foreground text-sm">+234 800 000 0000</p></div></div>
-          <div class="flex gap-3"><iconify-icon icon="lucide:mail" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Email</p><p class="text-muted-foreground text-sm">info@aletoclan.com</p></div></div>
-          <div class="flex gap-3"><iconify-icon icon="lucide:map-pin" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Office</p><p class="text-muted-foreground text-sm">Aleto Clan Community Hall, Eleme, Rivers State</p></div></div>
+          <div class="flex gap-3"><div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0"><iconify-icon icon="lucide:phone" class="text-primary text-xl"></iconify-icon></div><div><p class="font-bold">Phone</p><p class="text-muted-foreground text-sm">+234 800 000 0000</p></div></div>
+          <div class="flex gap-3"><div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0"><iconify-icon icon="lucide:mail" class="text-primary text-xl"></iconify-icon></div><div><p class="font-bold">Email</p><p class="text-muted-foreground text-sm">info@aletoclan.com</p></div></div>
+          <div class="flex gap-3"><div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0"><iconify-icon icon="lucide:map-pin" class="text-primary text-xl"></iconify-icon></div><div><p class="font-bold">Office</p><p class="text-muted-foreground text-sm">Aleto Clan Community Hall, Eleme, Rivers State</p></div></div>
         </div>
       </div>
       <div class="bg-card border border-border rounded-2xl p-8 shadow-sm">
