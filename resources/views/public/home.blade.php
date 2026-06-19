@@ -4,561 +4,306 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aleto Clan Community Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <style>
-        :root { --primary: #1a5276; --secondary: #27ae60; --accent: #f39c12; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; }
-
-        /* Navbar */
-        .navbar-custom { background: var(--primary); padding: 12px 0; }
-        .navbar-custom .navbar-brand { font-weight: 700; font-size: 1.4rem; }
-        .navbar-custom .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; }
-        .navbar-custom .nav-link:hover { color: #fff !important; }
-
-        /* Hero Slider */
-        .hero-section { position: relative; height: 85vh; min-height: 500px; overflow: hidden; }
-        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease; background-size: cover; background-position: center; }
-        .hero-slide.active { opacity: 1; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26,82,118,0.85), rgba(39,174,96,0.7)); }
-        .hero-content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; }
-        .hero-content h1 { font-size: 3.2rem; font-weight: 800; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
-        .hero-content p { font-size: 1.3rem; opacity: 0.95; }
-        .hero-indicators { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3; }
-        .hero-indicators span { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); margin: 0 5px; cursor: pointer; transition: 0.3s; }
-        .hero-indicators span.active { background: #fff; transform: scale(1.3); }
-
-        /* Sections */
-        .section-title { font-weight: 700; color: var(--primary); position: relative; padding-bottom: 10px; }
-        .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 4px; background: var(--secondary); border-radius: 2px; }
-        .section-title.text-center::after { left: 50%; transform: translateX(-50%); }
-
-        /* Feature Cards */
-        .feature-card { border: none; border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s; height: 100%; }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
-        .feature-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; }
-
-        /* Stats */
-        .stat-card { background: var(--primary); color: white; border-radius: 12px; padding: 30px; text-align: center; }
-        .stat-card h2 { font-size: 2.5rem; font-weight: 800; }
-
-        /* Contact Form */
-        .contact-section { background: #f8f9fa; }
-        .form-control:focus { border-color: var(--secondary); box-shadow: 0 0 0 0.2rem rgba(39,174,96,0.15); }
-
-        /* Footer */
-        .footer { background: #1a2a3a; color: #ccc; padding: 50px 0 20px; }
-        .footer h5 { color: #fff; font-weight: 600; }
-        .footer a { color: #aaa; text-decoration: none; }
-        .footer a:hover { color: var(--secondary); }
-
-        /* WhatsApp Float */
-        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; z-index: 9999; width: 60px; height: 60px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(37,211,102,0.4); transition: transform 0.3s; }
-        .whatsapp-float:hover { transform: scale(1.1); }
-        .whatsapp-float i { font-size: 2rem; color: white; }
-
-        /* Announcements Ticker */
-        .announcement-bar { background: var(--accent); color: #000; padding: 8px 0; font-weight: 500; overflow: hidden; }
-
-        /* Member Cards */
-        .member-card { transition: transform 0.2s; border-radius: 12px; overflow: hidden; }
-        .member-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .member-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #e0e0e0; margin: 0 auto; display: block; }
-        .member-photo-placeholder { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #1a5276, #27ae60); color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-weight: bold; font-size: 18px; }
-        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 1.8rem; }
-            .hero-content p { font-size: 1rem; }
-            .hero-section { height: 65vh; min-height: 400px; }
-            .section-title { font-size: 1.4rem; }
-            .feature-card { margin-bottom: 0; }
-            .feature-icon { width: 45px; height: 45px; font-size: 1.2rem; }
-            .navbar-custom .navbar-brand { font-size: 1.1rem; }
-            .stat-card h2 { font-size: 1.8rem; }
-            .footer { padding: 30px 0 15px; }
-            .footer .col-md-4 { margin-bottom: 20px; }
-            .input-group-lg .form-control { font-size: 16px; }
-            .btn-lg { font-size: 14px; padding: 0.6rem 1rem; }
-            .card { border-radius: 10px; }
-            .member-photo { width: 55px; height: 55px; }
-            .member-photo-placeholder { width: 55px; height: 55px; font-size: 14px; }
-            .whatsapp-float { width: 50px; height: 50px; bottom: 15px; right: 15px; }
-            .whatsapp-float i { font-size: 1.6rem; }
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+      @import "tailwindcss";
+      @theme inline {
+        --color-background: #f8fafc;
+        --color-foreground: #0f172a;
+        --color-primary: #064e3b;
+        --color-primary-foreground: #ffffff;
+        --color-secondary: #1e3a8a;
+        --color-secondary-foreground: #ffffff;
+        --color-muted: #f1f5f9;
+        --color-muted-foreground: #64748b;
+        --color-card: #ffffff;
+        --color-border: #e2e8f0;
+        --color-tertiary: #10b981;
+        --font-family-sans: Inter, sans-serif;
+      }
     </style>
 </head>
-<body>
+<body class="bg-background font-sans text-foreground">
 
 <!-- Announcement Ticker -->
-<div class="announcement-bar" id="announcementBar" style="display:none;">
-    <div class="container">
-        <span class="ticker-content" id="tickerContent"></span>
-    </div>
+<div id="announcementBar" class="bg-tertiary text-white text-sm py-2 overflow-hidden" style="display:none;">
+  <div class="max-w-7xl mx-auto px-4"><span id="tickerContent" class="inline-block whitespace-nowrap animate-[ticker_30s_linear_infinite]"></span></div>
 </div>
+<style>@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}</style>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">🏘️ Aleto Clan Portal</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="publicNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="/members">Members</a></li>
-                <li class="nav-item"><a class="nav-link" href="#verify">Verify</a></li>
-                <li class="nav-item"><a class="nav-link" href="#transparency">Transparency</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="#track">Track Ticket</a></li>
-            </ul>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 w-full bg-card border-b border-border shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+          <iconify-icon icon="lucide:shield" class="text-primary-foreground text-2xl"></iconify-icon>
         </div>
+        <span class="text-xl font-bold text-primary tracking-tight">Aleto Clan Portal</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-6">
+        <a href="/" class="text-primary font-semibold border-b-2 border-primary pb-1">Home</a>
+        <a href="#about" class="text-muted-foreground hover:text-primary transition-colors">About</a>
+        <a href="/members" class="text-muted-foreground hover:text-primary transition-colors">Members</a>
+        <a href="#verify" class="text-muted-foreground hover:text-primary transition-colors">Verify</a>
+        <a href="#transparency" class="text-muted-foreground hover:text-primary transition-colors">Transparency</a>
+        <a href="#contact" class="text-muted-foreground hover:text-primary transition-colors">Contact</a>
+        <a href="#track" class="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:opacity-90">Track Ticket</a>
+      </div>
+      <button class="lg:hidden p-2 text-muted-foreground" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+        <iconify-icon icon="lucide:menu" class="text-2xl"></iconify-icon>
+      </button>
     </div>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden lg:hidden pb-4 space-y-2">
+      <a href="/" class="block py-2 text-primary font-semibold">Home</a>
+      <a href="#about" class="block py-2 text-muted-foreground">About</a>
+      <a href="/members" class="block py-2 text-muted-foreground">Members</a>
+      <a href="#verify" class="block py-2 text-muted-foreground">Verify</a>
+      <a href="#transparency" class="block py-2 text-muted-foreground">Transparency</a>
+      <a href="#contact" class="block py-2 text-muted-foreground">Contact</a>
+      <a href="#track" class="block py-2 text-primary font-semibold">Track Ticket</a>
+    </div>
+  </div>
 </nav>
 
-<!-- Hero Slider -->
-<section class="hero-section" id="home">
-    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1920&q=80')"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&q=80')"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=1920&q=80')"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <div class="container text-white">
-            <div class="row">
-                <div class="col-lg-8">
-                    <h1>Empowering Our Community<br>Through Transparency</h1>
-                    <p class="mt-3">The Aleto Clan Community Portal ensures fair distribution of grants and stipends to every deserving member. No fraud. No double registration. Complete accountability.</p>
-                    <a href="#contact" class="btn btn-lg btn-light me-2 mt-3"><i class="bi bi-envelope"></i> Submit Enquiry</a>
-                    <a href="#track" class="btn btn-lg btn-outline-light mt-3"><i class="bi bi-search"></i> Track Your Ticket</a>
-                </div>
-            </div>
-        </div>
+<!-- Hero Section -->
+<section class="relative w-full py-20 lg:py-32 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1920&q=80" alt="Community" class="w-full h-full object-cover opacity-20">
+    <div class="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-primary uppercase bg-primary/10 rounded-full">Official Social Registry</span>
+    <h1 class="text-4xl md:text-6xl font-extrabold text-secondary leading-tight mb-6">
+      Securing Our Future, <br><span class="text-primary">One Member at a Time</span>
+    </h1>
+    <p class="max-w-2xl mx-auto text-lg text-muted-foreground mb-10">
+      The Aleto Clan Community Portal ensures fair distribution of stipends, quality healthcare, and transparent development projects through a unified digital registry.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#verify" class="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:scale-105 transition-transform text-center">Verify Identity</a>
+      <a href="/members" class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-primary text-primary rounded-xl font-bold text-lg hover:bg-primary/5 transition-colors text-center">View Members</a>
     </div>
-    <div class="hero-indicators">
-        <span class="active" onclick="goToSlide(0)"></span>
-        <span onclick="goToSlide(1)"></span>
-        <span onclick="goToSlide(2)"></span>
-    </div>
+  </div>
 </section>
 
-<!-- About Section -->
-<section class="py-5" id="about">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h2 class="section-title mb-4">About Aleto Clan Portal</h2>
-                <p class="lead">A digital social registry that captures every member of the Aleto Clan community and ensures transparent, fair distribution of government and community grants.</p>
-                <p>Our portal prevents fraud, eliminates ghost beneficiaries, and provides a complete audit trail for every transaction. Whether it's financial stipends, healthcare support, educational scholarships, or community development projects — every naira is tracked and accounted for.</p>
-                <div class="row mt-4">
-                    <div class="col-6"><div class="d-flex align-items-center"><i class="bi bi-shield-check text-success fs-3 me-2"></i><span>Fraud Prevention</span></div></div>
-                    <div class="col-6"><div class="d-flex align-items-center"><i class="bi bi-people text-primary fs-3 me-2"></i><span>Full Registry</span></div></div>
-                    <div class="col-6 mt-3"><div class="d-flex align-items-center"><i class="bi bi-clipboard-data text-warning fs-3 me-2"></i><span>Audit Trail</span></div></div>
-                    <div class="col-6 mt-3"><div class="d-flex align-items-center"><i class="bi bi-bank text-info fs-3 me-2"></i><span>Direct Payments</span></div></div>
-                </div>
-            </div>
-            <div class="col-lg-6 mt-4 mt-lg-0">
-                <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=600&q=80" alt="Community" class="img-fluid rounded shadow">
-            </div>
-        </div>
+<!-- Impact Stats -->
+<section class="py-12 bg-secondary" id="transparency">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      <div class="p-4"><p class="text-3xl md:text-4xl font-bold text-white mb-1" id="statTotal">-</p><p class="text-secondary-foreground/70 text-sm font-medium uppercase tracking-wide">Registered Members</p></div>
+      <div class="p-4"><p class="text-3xl md:text-4xl font-bold text-white mb-1" id="statActive">-</p><p class="text-secondary-foreground/70 text-sm font-medium uppercase tracking-wide">Active Members</p></div>
+      <div class="p-4"><p class="text-3xl md:text-4xl font-bold text-white mb-1" id="statGrants">-</p><p class="text-secondary-foreground/70 text-sm font-medium uppercase tracking-wide">Grants Distributed</p></div>
+      <div class="p-4"><p class="text-3xl md:text-4xl font-bold text-white mb-1" id="statDeceased">-</p><p class="text-secondary-foreground/70 text-sm font-medium uppercase tracking-wide">Deceased/Archived</p></div>
     </div>
+  </div>
 </section>
 
-<!-- Services/Features -->
-<section class="py-5 bg-light" id="services">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">What We Do</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-primary bg-opacity-10 text-primary">👥</div>
-                    <h5>Community Registry</h5>
-                    <p class="text-muted">Every clan member is registered with unique identification, biometrics, and household details. Complete demographic records.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-success bg-opacity-10 text-success">💰</div>
-                    <h5>Grant Distribution</h5>
-                    <p class="text-muted">Transparent selection of beneficiaries for government and community grants. Verified payment tracking to prevent fraud.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-danger bg-opacity-10 text-danger">🛡️</div>
-                    <h5>Fraud Prevention</h5>
-                    <p class="text-muted">Biometric verification, duplicate detection, NIN cross-referencing. No ghost beneficiaries or double payments.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-info bg-opacity-10 text-info">🏥</div>
-                    <h5>Healthcare Support</h5>
-                    <p class="text-muted">Medical records, clinic visits, preventive care alerts, and health-related grants for community welfare.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-warning bg-opacity-10 text-warning">📚</div>
-                    <h5>Education Programs</h5>
-                    <p class="text-muted">Student enrollment, scholarship management, exam tracking, and adult literacy programs.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card feature-card shadow-sm p-4">
-                    <div class="feature-icon bg-secondary bg-opacity-10 text-secondary">🏗️</div>
-                    <h5>Development Projects</h5>
-                    <p class="text-muted">Track community infrastructure projects — water, roads, electrification — with beneficiary mapping and impact analytics.</p>
-                </div>
-            </div>
-        </div>
+<!-- Core Modules -->
+<section class="py-20 bg-background" id="about">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold text-secondary mb-4">Core Ecosystem Modules</h2>
+      <p class="text-muted-foreground max-w-xl mx-auto">Comprehensive tools designed to eliminate fraud and empower every household in the Aleto community.</p>
     </div>
-</section>
-
-<!-- Contact / Enquiry Form -->
-<section class="py-5 contact-section" id="contact">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <h2 class="section-title mb-4">Contact Us</h2>
-                <p>Have a complaint, enquiry, or suggestion? Fill out the form and we'll respond promptly. You'll receive a ticket ID to track your submission.</p>
-                <div class="mt-4">
-                    <div class="d-flex mb-3"><i class="bi bi-telephone-fill text-primary fs-5 me-3"></i><div><strong>Phone</strong><br>+234 800 000 0000</div></div>
-                    <div class="d-flex mb-3"><i class="bi bi-envelope-fill text-primary fs-5 me-3"></i><div><strong>Email</strong><br>info@aletoclan.com</div></div>
-                    <div class="d-flex mb-3"><i class="bi bi-geo-alt-fill text-primary fs-5 me-3"></i><div><strong>Office</strong><br>Aleto Clan Community Hall, Eleme, Rivers State</div></div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card shadow-sm border-0 p-4">
-                    <form id="enquiryForm" onsubmit="submitEnquiry(event)">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" class="form-control" id="enqName" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone *</label>
-                                <input type="text" class="form-control" id="enqPhone" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" id="enqEmail">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Type *</label>
-                                <select class="form-select" id="enqType" required>
-                                    <option value="enquiry">General Enquiry</option>
-                                    <option value="complaint">Complaint</option>
-                                    <option value="suggestion">Suggestion</option>
-                                    <option value="grant_status">Grant Status Check</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Subject *</label>
-                                <input type="text" class="form-control" id="enqSubject" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Message *</label>
-                            <textarea class="form-control" id="enqMessage" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100" id="enqBtn">Submit Enquiry</button>
-                        <div id="enqResult" class="mt-3" style="display:none;"></div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:users" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Community Registry</h3>
+        <p class="text-muted-foreground mb-6">Digital social registry capturing newborns, adults, and elderly with unique clan IDs.</p>
+      </div>
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:credit-card" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Grant Distribution</h3>
+        <p class="text-muted-foreground mb-6">Transparent stipend allocation with proxy support for elderly and duplicate detection.</p>
+      </div>
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:shield-check" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Fraud Prevention</h3>
+        <p class="text-muted-foreground mb-6">Biometric verification and NIN integration to eliminate ghost beneficiaries.</p>
+      </div>
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:activity" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Healthcare Tracking</h3>
+        <p class="text-muted-foreground mb-6">Monitoring vaccinations, chronic conditions, and clinic visits for a healthier clan.</p>
+      </div>
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:graduation-cap" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Education Management</h3>
+        <p class="text-muted-foreground mb-6">Scholarship tracking and student performance monitoring across the community.</p>
+      </div>
+      <div class="group p-8 bg-card rounded-2xl border border-border hover:border-primary transition-all shadow-sm hover:shadow-xl">
+        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"><iconify-icon icon="lucide:map" class="text-3xl"></iconify-icon></div>
+        <h3 class="text-xl font-bold mb-3">Project Mapping</h3>
+        <p class="text-muted-foreground mb-6">Real-time tracking of water, road, and electrification projects with community feedback.</p>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Community Members Preview -->
-<section class="py-5" id="members">
-    <div class="container">
-        <h2 class="section-title text-center mb-3">Our Community Members</h2>
-        <p class="text-center text-muted mb-4">Registered and verified members of the Aleto Clan community.</p>
-        <div class="row g-3 justify-content-center" id="membersGrid"></div>
-        <div class="text-center mt-4">
-            <a href="/members" class="btn btn-primary btn-lg">View All Members <i class="bi bi-arrow-right"></i></a>
-        </div>
+<section class="py-20 bg-muted/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-secondary mb-4">Our Community Members</h2>
+      <p class="text-muted-foreground">Registered and verified members of the Aleto Clan community.</p>
     </div>
+    <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="membersGrid"></div>
+    <div class="text-center mt-8">
+      <a href="/members" class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:opacity-90 transition-opacity">View All Members <iconify-icon icon="lucide:arrow-right"></iconify-icon></a>
+    </div>
+  </div>
 </section>
 
-<!-- Verify Membership -->
-<section class="py-5 bg-light" id="verify">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <h2 class="section-title text-center mb-4">Verify Membership</h2>
-                <p class="text-muted">Enter a member's Unique ID to verify their registration. Only non-sensitive details are shown.</p>
-                <div class="input-group mt-4 mb-3" style="max-width:500px; margin:0 auto;">
-                    <input type="text" class="form-control form-control-lg" id="verifyInput" placeholder="Enter Unique ID (e.g. ALC-20260615-00001)">
-                    <button class="btn btn-success btn-lg" onclick="verifyMember()"><i class="bi bi-shield-check"></i> Verify</button>
-                </div>
-                <div id="verifyResult" class="mt-4" style="display:none;"></div>
-            </div>
-        </div>
+<!-- Verify Member Section -->
+<section class="py-20 bg-background" id="verify">
+  <div class="max-w-2xl mx-auto px-4 text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full text-primary mb-6">
+      <iconify-icon icon="lucide:user-check" class="text-4xl"></iconify-icon>
     </div>
+    <h2 class="text-3xl font-bold text-secondary mb-3">Verify Membership</h2>
+    <p class="text-muted-foreground mb-8">Enter a member's Unique ID to verify their registration. Only non-sensitive details are shown.</p>
+    <div class="bg-card border border-border rounded-2xl p-8 shadow-sm">
+      <div class="relative mb-4">
+        <iconify-icon icon="lucide:tag" class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></iconify-icon>
+        <input type="text" id="verifyInput" placeholder="e.g., ALC-20260615-00001" class="w-full pl-10 pr-4 py-3 bg-muted/30 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+      </div>
+      <button onclick="verifyMember()" class="w-full py-4 bg-primary text-primary-foreground rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+        <iconify-icon icon="lucide:shield-check" class="text-2xl"></iconify-icon> Verify Member
+      </button>
+      <div id="verifyResult" class="mt-6 text-left" style="display:none;"></div>
+    </div>
+  </div>
 </section>
 
-<!-- Transparency Dashboard -->
-<section class="py-5" id="transparency">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Transparency Dashboard</h2>
-        <p class="text-center text-muted mb-4">Real-time community statistics — verifiable by all members.</p>
-        <div class="row g-4 justify-content-center" id="statsCards">
-            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-primary" id="statTotal">-</h3><p class="text-muted mb-0">Total Registered</p></div></div>
-            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-success" id="statActive">-</h3><p class="text-muted mb-0">Active Members</p></div></div>
-            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-secondary" id="statDeceased">-</h3><p class="text-muted mb-0">Deceased</p></div></div>
-            <div class="col-md-3"><div class="card text-center shadow-sm py-4"><h3 class="text-warning" id="statArchived">-</h3><p class="text-muted mb-0">Archived</p></div></div>
+<!-- Contact Section -->
+<section class="py-20 bg-muted/50" id="contact">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div>
+        <h2 class="text-3xl font-bold text-secondary mb-6">Contact Us</h2>
+        <p class="text-muted-foreground mb-8">Have a complaint, enquiry, or suggestion? Fill out the form and we'll respond promptly.</p>
+        <div class="space-y-4">
+          <div class="flex gap-3"><iconify-icon icon="lucide:phone" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Phone</p><p class="text-muted-foreground text-sm">+234 800 000 0000</p></div></div>
+          <div class="flex gap-3"><iconify-icon icon="lucide:mail" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Email</p><p class="text-muted-foreground text-sm">info@aletoclan.com</p></div></div>
+          <div class="flex gap-3"><iconify-icon icon="lucide:map-pin" class="text-primary text-xl mt-1"></iconify-icon><div><p class="font-bold">Office</p><p class="text-muted-foreground text-sm">Aleto Clan Community Hall, Eleme, Rivers State</p></div></div>
         </div>
-        <div class="mt-4" id="grantStatsSection" style="display:none;">
-            <h5 class="text-center mb-3">Grant Beneficiaries</h5>
-            <div class="row g-3 justify-content-center" id="grantStatsCards"></div>
-        </div>
+      </div>
+      <div class="bg-card border border-border rounded-2xl p-8 shadow-sm">
+        <form id="enquiryForm" onsubmit="submitEnquiry(event)">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="block text-sm font-bold mb-1">Full Name *</label><input id="enqName" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" required></div>
+            <div><label class="block text-sm font-bold mb-1">Phone *</label><input id="enqPhone" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" required></div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div><label class="block text-sm font-bold mb-1">Email</label><input id="enqEmail" type="email" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"></div>
+            <div><label class="block text-sm font-bold mb-1">Type *</label><select id="enqType" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none" required><option value="enquiry">General Enquiry</option><option value="complaint">Complaint</option><option value="suggestion">Suggestion</option><option value="grant_status">Grant Status</option></select></div>
+          </div>
+          <div class="mb-4"><label class="block text-sm font-bold mb-1">Subject *</label><input id="enqSubject" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" required></div>
+          <div class="mb-4"><label class="block text-sm font-bold mb-1">Message *</label><textarea id="enqMessage" rows="4" class="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" required></textarea></div>
+          <button type="submit" id="enqBtn" class="w-full py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:opacity-90 transition-opacity">Submit Enquiry</button>
+          <div id="enqResult" class="mt-4" style="display:none;"></div>
+        </form>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Track Ticket -->
-<section class="py-5 bg-light" id="track">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <h2 class="section-title text-center mb-4">Track Your Ticket</h2>
-                <p class="text-muted">Enter your ticket ID to check the status of your complaint or enquiry.</p>
-                <div class="input-group mt-4">
-                    <input type="text" class="form-control form-control-lg" id="trackInput" placeholder="Enter Ticket ID (e.g. TKT-XXXXXXXX)">
-                    <button class="btn btn-primary btn-lg" onclick="trackTicket()"><i class="bi bi-search"></i> Track</button>
-                </div>
-                <div id="trackResult" class="mt-4" style="display:none;"></div>
-            </div>
-        </div>
+<section class="py-20 bg-background" id="track">
+  <div class="max-w-lg mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-secondary mb-3">Track Your Ticket</h2>
+    <p class="text-muted-foreground mb-6">Enter your ticket ID to check the status of your complaint or enquiry.</p>
+    <div class="flex gap-2">
+      <input type="text" id="trackInput" placeholder="TKT-XXXXXXXX" class="flex-1 px-4 py-3 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20">
+      <button onclick="trackTicket()" class="px-6 py-3 bg-primary text-primary-foreground rounded-xl font-bold hover:opacity-90">Track</button>
     </div>
+    <div id="trackResult" class="mt-6 text-left" style="display:none;"></div>
+  </div>
 </section>
 
 <!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <h5>🏘️ Aleto Clan Portal</h5>
-                <p class="small">A digital social registry ensuring transparent and fair distribution of grants and stipends to community members.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h5>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Our Services</a></li>
-                    <li><a href="#verify">Verify Member</a></li>
-                    <li><a href="#transparency">Transparency</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#track">Track Ticket</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h5>Contact Info</h5>
-                <p class="small mb-1"><i class="bi bi-telephone"></i> +234 800 000 0000</p>
-                <p class="small mb-1"><i class="bi bi-envelope"></i> info@aletoclan.com</p>
-                <p class="small"><i class="bi bi-geo-alt"></i> Aleto Clan Community Hall, Eleme, Rivers State, Nigeria</p>
-            </div>
-        </div>
-        <hr style="border-color: #333;">
-        <p class="text-center small mb-0">&copy; {{ date('Y') }} Aleto Clan Community Portal. All rights reserved.</p>
+<footer class="bg-secondary text-white pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <div class="space-y-4">
+        <div class="flex items-center gap-2"><div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center"><iconify-icon icon="lucide:shield" class="text-primary-foreground text-2xl"></iconify-icon></div><span class="text-xl font-bold">Aleto Clan Portal</span></div>
+        <p class="text-secondary-foreground/70 text-sm">A digital gateway for the Aleto Clan, ensuring integrity in social welfare and community development.</p>
+      </div>
+      <div><h4 class="text-lg font-bold mb-6">Quick Links</h4><ul class="space-y-3 text-secondary-foreground/70 text-sm"><li><a href="#about" class="hover:text-white">About Us</a></li><li><a href="/members" class="hover:text-white">Members</a></li><li><a href="#verify" class="hover:text-white">Verify Member</a></li><li><a href="#transparency" class="hover:text-white">Transparency</a></li><li><a href="#contact" class="hover:text-white">Contact</a></li></ul></div>
+      <div><h4 class="text-lg font-bold mb-6">Contact</h4><ul class="space-y-3 text-secondary-foreground/70 text-sm"><li class="flex gap-2"><iconify-icon icon="lucide:map-pin" class="text-primary"></iconify-icon>Aleto Clan Community Hall, Eleme, Rivers State</li><li class="flex gap-2"><iconify-icon icon="lucide:phone" class="text-primary"></iconify-icon>+234 800 000 0000</li><li class="flex gap-2"><iconify-icon icon="lucide:mail" class="text-primary"></iconify-icon>info@aletoclan.com</li></ul></div>
+      <div><h4 class="text-lg font-bold mb-6">Newsletter</h4><p class="text-secondary-foreground/70 text-sm mb-4">Stay updated on clan projects and grant cycles.</p><div class="flex gap-2"><input type="email" placeholder="Email address" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none"><button class="bg-primary px-4 py-2 rounded-lg hover:opacity-90"><iconify-icon icon="lucide:send"></iconify-icon></button></div></div>
     </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-secondary-foreground/50">
+      <p>&copy; {{ date('Y') }} Aleto Clan Community Portal. All rights reserved.</p>
+      <div class="flex gap-6"><a href="#" class="hover:text-white">Privacy Policy</a><a href="#" class="hover:text-white">Terms of Service</a></div>
+    </div>
+  </div>
 </footer>
 
-<!-- WhatsApp Float Button -->
-<a href="https://wa.me/2348000000000?text=Hello%2C%20I%20need%20assistance%20from%20Aleto%20Clan%20Portal" target="_blank" class="whatsapp-float" title="Chat on WhatsApp">
-    <i class="bi bi-whatsapp"></i>
+<!-- WhatsApp Float -->
+<a href="https://wa.me/2348000000000?text=Hello%2C%20I%20need%20assistance" target="_blank" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+  <iconify-icon icon="logos:whatsapp-icon" class="text-3xl"></iconify-icon>
 </a>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Hero Slider
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.hero-slide');
-    const indicators = document.querySelectorAll('.hero-indicators span');
+// Load stats
+fetch('/api/public/stats').then(r=>r.json()).then(d=>{
+  document.getElementById('statTotal').textContent=d.total_members?.toLocaleString()||'0';
+  document.getElementById('statActive').textContent=d.active?.toLocaleString()||'0';
+  document.getElementById('statDeceased').textContent=((d.deceased||0)+(d.archived||0)).toLocaleString();
+  document.getElementById('statGrants').textContent=(d.grant_stats||[]).length;
+}).catch(()=>{});
 
-    function goToSlide(index) {
-        slides[currentSlide].classList.remove('active');
-        indicators[currentSlide].classList.remove('active');
-        currentSlide = index;
-        slides[currentSlide].classList.add('active');
-        indicators[currentSlide].classList.add('active');
-    }
+// Load members preview
+fetch('/api/public/members?per_page=12').then(r=>r.json()).then(d=>{
+  const grid=document.getElementById('membersGrid');
+  (d.data||[]).forEach(m=>{
+    const photo=m.passport_photo?`/storage/${m.passport_photo}`:'';
+    const initials=m.full_name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+    grid.innerHTML+=`<div class="text-center"><div class="w-16 h-16 mx-auto rounded-full ${photo?'':'bg-gradient-to-br from-primary to-secondary'} flex items-center justify-center text-white font-bold overflow-hidden">${photo?`<img src="${photo}" class="w-full h-full object-cover">`:`${initials}`}</div><p class="text-xs font-semibold mt-2 truncate">${m.full_name}</p></div>`;
+  });
+}).catch(()=>{});
 
-    setInterval(() => {
-        goToSlide((currentSlide + 1) % slides.length);
-    }, 5000);
+// Load announcements
+fetch('/api/public/announcements').then(r=>r.json()).then(d=>{
+  if(d.length>0){document.getElementById('tickerContent').textContent=d.map(a=>a.title+': '+a.content).join('   |   ');document.getElementById('announcementBar').style.display='block';}
+}).catch(()=>{});
 
-    // Load announcements
-    fetch('/api/public/announcements')
-        .then(r => r.json())
-        .then(data => {
-            if (data.length > 0) {
-                const ticker = data.map(a => `📢 ${a.title}: ${a.content}`).join('   |   ');
-                document.getElementById('tickerContent').textContent = ticker;
-                document.getElementById('announcementBar').style.display = 'block';
-            }
-        }).catch(() => {});
+// Verify Member
+function verifyMember(){
+  const uid=document.getElementById('verifyInput').value.trim();
+  if(!uid)return alert('Please enter a Unique ID');
+  fetch('/api/public/search',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({unique_id:uid})})
+  .then(r=>r.json()).then(d=>{
+    const el=document.getElementById('verifyResult');el.style.display='block';
+    if(d.data){const v=d.data;el.innerHTML=`<div class="p-4 bg-green-50 border border-green-200 rounded-xl"><p class="font-bold text-green-800 mb-2">Member Verified</p><table class="w-full text-sm"><tr><td class="py-1 font-semibold w-32">Name</td><td>${v.full_name}</td></tr><tr><td class="py-1 font-semibold">ID</td><td class="font-mono">${v.unique_id}</td></tr><tr><td class="py-1 font-semibold">Household</td><td>${v.household_id}</td></tr><tr><td class="py-1 font-semibold">Status</td><td><span class="px-2 py-0.5 rounded-full text-xs font-bold ${v.status==='active'?'bg-green-100 text-green-800':'bg-gray-100 text-gray-800'}">${v.status}</span></td></tr><tr><td class="py-1 font-semibold">Village</td><td>${v.village||'N/A'}</td></tr></table></div>`;}
+    else{el.innerHTML=`<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">No member found with this ID.</div>`;}
+  }).catch(()=>{document.getElementById('verifyResult').style.display='block';document.getElementById('verifyResult').innerHTML=`<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">Member not found.</div>`;});
+}
 
-    // Load community members preview
-    fetch('/api/public/members?per_page=12')
-        .then(r => r.json())
-        .then(data => {
-            const grid = document.getElementById('membersGrid');
-            (data.data || []).forEach(m => {
-                const photo = m.passport_photo ? `/storage/${m.passport_photo}` : '';
-                const initials = m.full_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                grid.innerHTML += `
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card text-center shadow-sm h-100 member-card">
-                            <div class="card-body p-2">
-                                ${photo
-                                    ? `<img src="${photo}" class="member-photo" alt="${m.full_name}">`
-                                    : `<div class="member-photo-placeholder">${initials}</div>`
-                                }
-                                <p class="mb-0 mt-2 small fw-semibold">${m.full_name}</p>
-                                <p class="mb-0 text-muted" style="font-size:10px;"><code>${m.unique_id}</code></p>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        }).catch(() => {});
+// Submit Enquiry
+function submitEnquiry(e){
+  e.preventDefault();const btn=document.getElementById('enqBtn');btn.disabled=true;btn.textContent='Submitting...';
+  fetch('/api/enquiries',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({full_name:document.getElementById('enqName').value,phone:document.getElementById('enqPhone').value,email:document.getElementById('enqEmail').value,type:document.getElementById('enqType').value,subject:document.getElementById('enqSubject').value,message:document.getElementById('enqMessage').value})})
+  .then(r=>r.json()).then(d=>{document.getElementById('enqResult').style.display='block';document.getElementById('enqResult').innerHTML=`<div class="p-4 bg-green-50 border border-green-200 rounded-xl text-green-800"><p class="font-bold">Submitted!</p><p>Ticket ID: <code class="font-mono">${d.ticket_id}</code></p></div>`;document.getElementById('enquiryForm').reset();btn.disabled=false;btn.textContent='Submit Enquiry';})
+  .catch(()=>{document.getElementById('enqResult').style.display='block';document.getElementById('enqResult').innerHTML=`<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">Error submitting.</div>`;btn.disabled=false;btn.textContent='Submit Enquiry';});
+}
 
-    // Load transparency stats
-    fetch('/api/public/stats')
-        .then(r => r.json())
-        .then(data => {
-            document.getElementById('statTotal').textContent = data.total_members;
-            document.getElementById('statActive').textContent = data.active;
-            document.getElementById('statDeceased').textContent = data.deceased;
-            document.getElementById('statArchived').textContent = data.archived;
-            if (data.grant_stats && data.grant_stats.length > 0) {
-                document.getElementById('grantStatsSection').style.display = 'block';
-                const container = document.getElementById('grantStatsCards');
-                data.grant_stats.forEach(g => {
-                    container.innerHTML += `<div class="col-md-4"><div class="card shadow-sm p-3 text-center"><h5 class="text-info">${g.beneficiaries}</h5><p class="text-muted small mb-0">${g.name}</p></div></div>`;
-                });
-            }
-        }).catch(() => {});
-
-    // Verify Membership
-    function verifyMember() {
-        const uid = document.getElementById('verifyInput').value.trim();
-        if (!uid) return alert('Please enter a Unique ID');
-        fetch('/api/public/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ unique_id: uid })
-        })
-        .then(r => r.json())
-        .then(data => {
-            const el = document.getElementById('verifyResult');
-            el.style.display = 'block';
-            if (data.data) {
-                const d = data.data;
-                const statusColor = { active: 'success', deceased: 'secondary', archived: 'warning' }[d.status] || 'secondary';
-                el.innerHTML = `
-                    <div class="card text-start shadow-sm" style="max-width:500px; margin:0 auto;">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="mb-0">${d.full_name}</h5>
-                                <span class="badge bg-${statusColor}">${d.status.toUpperCase()}</span>
-                            </div>
-                            <table class="table table-sm mb-0">
-                                <tr><th>Unique ID</th><td><code>${d.unique_id}</code></td></tr>
-                                <tr><th>Household</th><td>${d.household_id}</td></tr>
-                                <tr><th>Gender</th><td>${d.gender}</td></tr>
-                                <tr><th>Village</th><td>${d.village || 'N/A'}</td></tr>
-                                <tr><th>Ward</th><td>${d.ward || 'N/A'}</td></tr>
-                                <tr><th>Registered</th><td>${new Date(d.created_at).toLocaleDateString()}</td></tr>
-                            </table>
-                            <p class="text-success mt-2 mb-0"><i class="bi bi-check-circle"></i> This member is verified in the Aleto Clan Registry.</p>
-                        </div>
-                    </div>`;
-            } else {
-                el.innerHTML = `<div class="alert alert-danger" style="max-width:500px; margin:0 auto;"><i class="bi bi-x-circle"></i> No member found with this ID. Please check and try again.</div>`;
-            }
-        })
-        .catch(() => {
-            document.getElementById('verifyResult').style.display = 'block';
-            document.getElementById('verifyResult').innerHTML = `<div class="alert alert-danger" style="max-width:500px; margin:0 auto;">Member not found. Please verify the ID.</div>`;
-        });
-    }
-
-    // Submit Enquiry
-    function submitEnquiry(e) {
-        e.preventDefault();
-        const btn = document.getElementById('enqBtn');
-        btn.disabled = true; btn.textContent = 'Submitting...';
-
-        fetch('/api/enquiries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                full_name: document.getElementById('enqName').value,
-                phone: document.getElementById('enqPhone').value,
-                email: document.getElementById('enqEmail').value,
-                type: document.getElementById('enqType').value,
-                subject: document.getElementById('enqSubject').value,
-                message: document.getElementById('enqMessage').value,
-            })
-        })
-        .then(r => r.json())
-        .then(data => {
-            document.getElementById('enqResult').style.display = 'block';
-            document.getElementById('enqResult').innerHTML = `<div class="alert alert-success"><strong>✅ Submitted!</strong><br>Your ticket ID is: <code>${data.ticket_id}</code><br>Save this ID to track your enquiry status.</div>`;
-            document.getElementById('enquiryForm').reset();
-            btn.disabled = false; btn.textContent = 'Submit Enquiry';
-        })
-        .catch(err => {
-            document.getElementById('enqResult').style.display = 'block';
-            document.getElementById('enqResult').innerHTML = `<div class="alert alert-danger">Error submitting. Please try again.</div>`;
-            btn.disabled = false; btn.textContent = 'Submit Enquiry';
-        });
-    }
-
-    // Track Ticket
-    function trackTicket() {
-        const ticketId = document.getElementById('trackInput').value.trim();
-        if (!ticketId) return alert('Please enter a ticket ID');
-
-        fetch('/api/enquiries/track', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ ticket_id: ticketId })
-        })
-        .then(r => r.json())
-        .then(data => {
-            const el = document.getElementById('trackResult');
-            el.style.display = 'block';
-            if (data.data) {
-                const d = data.data;
-                const statusColor = { pending: 'warning', in_progress: 'info', resolved: 'success', closed: 'secondary' }[d.status] || 'secondary';
-                el.innerHTML = `
-                    <div class="card text-start shadow-sm">
-                        <div class="card-body">
-                            <h6>Ticket: <code>${d.ticket_id}</code></h6>
-                            <p><strong>Subject:</strong> ${d.subject}<br>
-                            <strong>Type:</strong> ${d.type}<br>
-                            <strong>Submitted:</strong> ${d.submitted_at}<br>
-                            <strong>Status:</strong> <span class="badge bg-${statusColor}">${d.status}</span></p>
-                            ${d.response ? `<hr><strong>Response:</strong><br>${d.response}<br><small class="text-muted">Responded: ${d.responded_at}</small>` : '<p class="text-muted">No response yet. Please check back later.</p>'}
-                        </div>
-                    </div>`;
-            } else {
-                el.innerHTML = `<div class="alert alert-danger">Ticket not found. Please check the ID.</div>`;
-            }
-        })
-        .catch(() => {
-            document.getElementById('trackResult').style.display = 'block';
-            document.getElementById('trackResult').innerHTML = `<div class="alert alert-danger">Ticket not found.</div>`;
-        });
-    }
+// Track Ticket
+function trackTicket(){
+  const tid=document.getElementById('trackInput').value.trim();if(!tid)return alert('Enter ticket ID');
+  fetch('/api/enquiries/track',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({ticket_id:tid})})
+  .then(r=>r.json()).then(d=>{const el=document.getElementById('trackResult');el.style.display='block';
+    if(d.data){const t=d.data;el.innerHTML=`<div class="p-4 bg-card border border-border rounded-xl text-left"><p class="font-bold mb-2">${t.subject}</p><p class="text-sm text-muted-foreground mb-1">Status: <span class="font-bold">${t.status}</span></p><p class="text-sm text-muted-foreground mb-1">Submitted: ${t.submitted_at}</p>${t.response?`<div class="mt-3 p-3 bg-green-50 rounded-lg text-sm"><p class="font-bold">Response:</p><p>${t.response}</p></div>`:''}</div>`;}
+    else{el.innerHTML=`<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">Ticket not found.</div>`;}
+  }).catch(()=>{document.getElementById('trackResult').style.display='block';document.getElementById('trackResult').innerHTML=`<div class="p-4 bg-red-50 rounded-xl text-red-800">Not found.</div>`;});
+}
 </script>
 </body>
 </html>
