@@ -47,12 +47,12 @@
       </div>
       <div class="hidden lg:flex items-center gap-6">
         <a href="/" class="text-primary font-semibold border-b-2 border-primary pb-1">Home</a>
-        <a href="#about" class="text-muted-foreground hover:text-primary transition-colors">About</a>
+        <a href="/about" class="text-muted-foreground hover:text-primary transition-colors">About</a>
         <a href="/members" class="text-muted-foreground hover:text-primary transition-colors">Members</a>
-        <a href="#verify" class="text-muted-foreground hover:text-primary transition-colors">Verify</a>
-        <a href="#transparency" class="text-muted-foreground hover:text-primary transition-colors">Transparency</a>
-        <a href="#contact" class="text-muted-foreground hover:text-primary transition-colors">Contact</a>
-        <a href="#track" class="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:opacity-90">Track Ticket</a>
+        <a href="/verify" class="text-muted-foreground hover:text-primary transition-colors">Verify</a>
+        <a href="/transparency" class="text-muted-foreground hover:text-primary transition-colors">Transparency</a>
+        <a href="/contact" class="text-muted-foreground hover:text-primary transition-colors">Contact</a>
+        <a href="/track-ticket" class="bg-primary text-primary-foreground px-5 py-2 rounded-lg font-medium hover:opacity-90">Track Ticket</a>
       </div>
       <button class="lg:hidden p-2 text-muted-foreground" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
         <iconify-icon icon="lucide:menu" class="text-2xl"></iconify-icon>
@@ -61,12 +61,12 @@
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden lg:hidden pb-4 space-y-2">
       <a href="/" class="block py-2 text-primary font-semibold">Home</a>
-      <a href="#about" class="block py-2 text-muted-foreground">About</a>
+      <a href="/about" class="block py-2 text-muted-foreground">About</a>
       <a href="/members" class="block py-2 text-muted-foreground">Members</a>
-      <a href="#verify" class="block py-2 text-muted-foreground">Verify</a>
-      <a href="#transparency" class="block py-2 text-muted-foreground">Transparency</a>
-      <a href="#contact" class="block py-2 text-muted-foreground">Contact</a>
-      <a href="#track" class="block py-2 text-primary font-semibold">Track Ticket</a>
+      <a href="/verify" class="block py-2 text-muted-foreground">Verify</a>
+      <a href="/transparency" class="block py-2 text-muted-foreground">Transparency</a>
+      <a href="/contact" class="block py-2 text-muted-foreground">Contact</a>
+      <a href="/track-ticket" class="block py-2 text-primary font-semibold">Track Ticket</a>
     </div>
   </div>
 </nav>
