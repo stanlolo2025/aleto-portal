@@ -214,6 +214,34 @@
   </div>
 </section>
 
+<!-- Beyond Registration: Community Development -->
+<section class="py-20 bg-muted/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="lg:w-1/2">
+        <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?w=600&q=80" alt="Community Development" class="rounded-2xl shadow-2xl border-4 border-white">
+      </div>
+      <div class="lg:w-1/2">
+        <h2 class="text-3xl font-bold text-secondary mb-6">Beyond Registration: <br>Community Development</h2>
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary"><iconify-icon icon="lucide:activity"></iconify-icon></div>
+            <div><h4 class="font-bold text-lg mb-1">Healthcare Tracking</h4><p class="text-muted-foreground">Monitoring vaccinations, chronic conditions, and clinic visits for a healthier clan.</p></div>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary"><iconify-icon icon="lucide:graduation-cap"></iconify-icon></div>
+            <div><h4 class="font-bold text-lg mb-1">Education Management</h4><p class="text-muted-foreground">Scholarship tracking and student performance monitoring across the community.</p></div>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center text-primary"><iconify-icon icon="lucide:map"></iconify-icon></div>
+            <div><h4 class="font-bold text-lg mb-1">Project Mapping</h4><p class="text-muted-foreground">Real-time tracking of water, road, and electrification projects with community feedback.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Track Ticket -->
 <section class="py-20 bg-background" id="track">
   <div class="max-w-lg mx-auto px-4 text-center">
