@@ -7,6 +7,13 @@ Route::get('/', function () {
     return view('public.home');
 });
 
+// Public pages
+Route::get('/about', function () { return view('public.about'); });
+Route::get('/verify', function () { return view('public.verify'); });
+Route::get('/transparency', function () { return view('public.transparency'); });
+Route::get('/contact', function () { return view('public.contact'); });
+Route::get('/track-ticket', function () { return view('public.track-ticket'); });
+
 // Public members page
 Route::get('/members', function () {
     return view('public.members');
