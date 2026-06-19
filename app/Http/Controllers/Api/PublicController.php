@@ -13,19 +13,41 @@ use Illuminate\Support\Facades\DB;
 
 class PublicController extends Controller
 {
-    // Public search by Unique ID
+    // Public search by Unique ID, NIN, or Phone
     public function search(Request $request): JsonResponse
     {
         $request->validate(['unique_id' => 'required|string']);
 
-        $villager = VillagerRecord::where('unique_id', $request->unique_id)
-            ->first(['unique_id', 'full_name', 'household_id', 'status', 'gender', 'village', 'ward', 'created_at']);
+        $searchValue = $request->unique_id;
+
+        // Try unique_id first
+        $villager = VillagerRecord::where('unique_id', $searchValue)->first();
+
+        // If not found, try matching by phone number (encrypted field - need to scan)
+        if (!$villager) {
+            $allRecords = VillagerRecord::all();
+            foreach ($allRecords as $record) {
+                if ($record->phone_number === $searchValue || $record->nin === $searchValue) {
+                    $villager = $record;
+                    break;
+                }
+            }
+        }
 
         if (!$villager) {
             return response()->json(['message' => 'No record found with this ID'], 404);
         }
 
-        return response()->json(['data' => $villager]);
+        return response()->json(['data' => [
+            'unique_id' => $villager->unique_id,
+            'full_name' => $villager->full_name,
+            'household_id' => $villager->household_id,
+            'status' => $villager->status,
+            'gender' => $villager->gender,
+            'village' => $villager->village,
+            'ward' => $villager->ward,
+            'created_at' => $villager->created_at,
+        ]]);
     }
 
     // Transparency dashboard stats
